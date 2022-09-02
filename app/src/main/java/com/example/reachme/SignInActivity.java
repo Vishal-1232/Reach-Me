@@ -64,28 +64,29 @@ public class SignInActivity extends AppCompatActivity {
         binding.loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    progressDialog.show();
-                    auth.signInWithEmailAndPassword(binding.username.getText().toString(), binding.password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressDialog.dismiss();
-                            if (task.isSuccessful()) {
-                                Toast.makeText(SignInActivity.this, "Sign in Successfull", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                Toast.makeText(SignInActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                } catch (Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(SignInActivity.this, "Fill all fields", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
+                if (binding.username.getText().toString().isEmpty()) {
+                    binding.username.setError("Enter your email");
+                    return;
                 }
-
+                if (binding.password.getText().toString().isEmpty()){
+                    binding.password.setError("Enter your password");
+                    return;
+                }
+                progressDialog.show();
+                auth.signInWithEmailAndPassword(binding.username.getText().toString(), binding.password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+                        if (task.isSuccessful()) {
+                            Toast.makeText(SignInActivity.this, "Sign in Successfull", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(SignInActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
 

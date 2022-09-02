@@ -1,9 +1,9 @@
 package com.example.reachme.Models;
 
 public class Users {
-    String profilePic,userName,password,userID,lastMessage,lastSeen,mail;
+    String profilePic,userName,password,userID,lastMessage,lastSeen,mail,about;
 
-    public Users(String profilePic, String userName, String password, String userID, String lastMessage, String lastSeen,String mail) {
+    public Users(String profilePic, String userName, String password, String userID, String lastMessage, String lastSeen, String mail, String about) {
         this.profilePic = profilePic;
         this.userName = userName;
         this.password = password;
@@ -11,7 +11,9 @@ public class Users {
         this.lastMessage = lastMessage;
         this.lastSeen = lastSeen;
         this.mail = mail;
+        this.about = about;
     }
+
     public Users(){};
 //  sign up constructor
     public Users(String userName,String password,String mail){
@@ -77,5 +79,13 @@ public class Users {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
     }
 }

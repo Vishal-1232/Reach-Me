@@ -77,6 +77,12 @@ public class GroupChatActivity extends AppCompatActivity {
         binding.send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (binding.message.getText().toString().isEmpty()){
+                    binding.message.setError("Enter text to send");
+                    return;
+                }
+
                 final String message = binding.message.getText().toString();
                 binding.message.setText("");
 

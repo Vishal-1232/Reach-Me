@@ -5,12 +5,13 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MessageModel {
-    String uid,message;
+    String uid,message,messageId;
     long timeStamp;
 
-    public MessageModel(String uid, String message, long timeStamp) {
+    public MessageModel(String uid, String message, String messageId, long timeStamp) {
         this.uid = uid;
         this.message = message;
+        this.messageId = messageId;
         this.timeStamp = timeStamp;
     }
 
@@ -19,6 +20,14 @@ public class MessageModel {
         this.message = message;
     }
     public MessageModel(){};
+
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
 
     public String getUid() {
         return uid;

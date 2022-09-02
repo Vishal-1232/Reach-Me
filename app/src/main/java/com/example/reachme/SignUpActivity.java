@@ -44,6 +44,27 @@ public class SignUpActivity extends AppCompatActivity {
         binding.signupbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (binding.username.getText().toString().isEmpty()) {
+                    binding.username.setError("Set your Name");
+                    return;
+                }
+                if (binding.email.getText().toString().isEmpty()) {
+                    binding.email.setError("Enter your email");
+                    return;
+                }
+                if (binding.password.getText().toString().isEmpty()){
+                    binding.password.setError("Set your password");
+                    return;
+                }
+                if (binding.repassword.getText().toString().isEmpty()){
+                    binding.repassword.setError("Confirm your password");
+                    return;
+                }
+                if (!binding.password.getText().toString().equals(binding.repassword.getText().toString()))
+                {
+                    Toast.makeText(SignUpActivity.this, "Password not matched", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 progressDialog.show();
                 auth.createUserWithEmailAndPassword(binding.email.getText().toString(), binding.password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -52,12 +73,12 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             String id = task.getResult().getUser().getUid();
 
-                            Users users = new Users(binding.username.getText().toString(),binding.password.getText().toString(),binding.email.getText().toString());
+                            Users users = new Users(binding.username.getText().toString(), binding.password.getText().toString(), binding.email.getText().toString());
                             database.getReference().child("Users").child(id).setValue(users);
 
                             Toast.makeText(SignUpActivity.this, "Account Created Successfully", Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(SignUpActivity.this,MainActivity.class);
+                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
@@ -76,7 +97,7 @@ public class SignUpActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
-            Intent intent = new Intent(SignUpActivity.this,MainActivity.class);
+            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
