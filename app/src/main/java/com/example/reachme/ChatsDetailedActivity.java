@@ -51,9 +51,10 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         binding.back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChatsDetailedActivity.this,MainActivity.class);
+                /*Intent intent = new Intent(ChatsDetailedActivity.this,MainActivity.class);
                 startActivity(intent);
-                finish();
+                finish();*/
+                ChatsDetailedActivity.super.onBackPressed();
             }
         });
 
@@ -121,4 +122,5 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         });
 
     }
+
 }

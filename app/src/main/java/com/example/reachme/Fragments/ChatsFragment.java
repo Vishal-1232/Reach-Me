@@ -36,13 +36,15 @@ public class ChatsFragment extends Fragment {
     FirebaseDatabase database;
     FirebaseAuth auth;
 
+    UsersAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentChatsBinding.inflate(inflater, container, false);
 
-        UsersAdapter adapter = new UsersAdapter(list, getContext());
+        adapter = new UsersAdapter(list, getContext());
         binding.chatsRecyclerView.setAdapter(adapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -71,5 +73,11 @@ public class ChatsFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        adapter.notifyDataSetChanged();
+        super.onResume();
     }
 }
