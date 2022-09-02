@@ -52,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.logout:
                 SignOut();
                 break;
+            case R.id.groupChat:
+                Intent intent = new Intent(MainActivity.this, GroupChatActivity.class);
+                startActivity(intent);
+                finish();
+                break;
             case R.id.settings:
                 break;
         }
@@ -59,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void SignOut(){
+    public void SignOut() {
         FirebaseAuth.getInstance().signOut();
         Toast.makeText(MainActivity.this, "Logged out", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(MainActivity.this, SignInActivity.class);
