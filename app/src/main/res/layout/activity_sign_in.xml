@@ -12,9 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:text="Sign in"
         android:textColor="@color/white"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/signin"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="0dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:background="#30ffffff"
@@ -83,6 +83,16 @@
         android:textColor="@color/white" />
 
     <TextView
+        android:id="@+id/dontaccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/forgotpass"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Don't have account? Create one"
+        android:textColor="#F3F6F6" />
+
+    <TextView
         android:id="@+id/others"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -114,16 +124,6 @@
             android:src="@drawable/fb" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/dontaccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/forgotpass"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Don't have account? Create one"
-        android:textColor="@color/white" />
 
 
 </RelativeLayout>
