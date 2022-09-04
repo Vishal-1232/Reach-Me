@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#060606"
+    tools:context=".AccountActivity">
+
+    <ImageView
+        android:id="@+id/backArw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow"
+        app:tint="#EEE7E7" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backArw">
+
+        <TextView
+            android:id="@+id/privacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/lock"
+            android:drawablePadding="40dp"
+            android:padding="20dp"
+            android:text="Privacy"
+            android:textColor="#F9F5F5"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:drawableTint="#EEE8E8" />
+
+        <TextView
+            android:id="@+id/twoStep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/twostep"
+            android:drawablePadding="40dp"
+            android:padding="20dp"
+            android:text="Two-step verification"
+            android:textColor="#F9F5F5"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/change"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/change"
+            android:drawablePadding="40dp"
+            android:padding="20dp"
+            android:text="Change e-mail"
+            android:textColor="#F5F4F4"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/delete"
+            android:drawablePadding="40dp"
+            android:padding="20dp"
+            android:text="Delete my account"
+            android:textColor="#F5F4F4"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Account"
+        android:textColor="#F6F0F0"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/backArw"
+        app:layout_constraintStart_toEndOf="@+id/backArw"
+        app:layout_constraintTop_toTopOf="@+id/backArw" />
+</androidx.constraintlayout.widget.ConstraintLayout>

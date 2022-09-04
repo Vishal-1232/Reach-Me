@@ -15,6 +15,7 @@ import com.example.reachme.Models.Users;
 import com.example.reachme.databinding.ActivitySettingsBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -71,24 +72,28 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
         // setting activity image placed and edit texts updated
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null){
+            database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Users users = snapshot.getValue(Users.class);
+                            Picasso.get().load(users.getProfilePic()).placeholder(R.drawable.avatar)
+                                    .into(binding.profileImage);
 
-        database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Users users = snapshot.getValue(Users.class);
-                        Picasso.get().load(users.getProfilePic()).placeholder(R.drawable.avatar)
-                                .into(binding.profileImage);
+                            binding.etname.setText(users.getUserName());
+                            binding.about.setText(users.getAbout());
+                        }
 
-                        binding.etname.setText(users.getUserName());
-                        binding.about.setText(users.getAbout());
-                    }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+        }
 
-                    }
-                });
+
 
         // upload image on database
         binding.plus.setOnClickListener(new View.OnClickListener() {
@@ -98,6 +103,14 @@ public class SettingsActivity extends AppCompatActivity {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent,33);
+            }
+        });
+
+        // Account
+        binding.account.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SettingsActivity.this,AccountActivity.class));
             }
         });
     }
