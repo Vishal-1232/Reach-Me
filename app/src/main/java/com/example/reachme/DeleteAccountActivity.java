@@ -51,6 +51,15 @@ public class DeleteAccountActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
 
+        binding.backArw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DeleteAccountActivity.this,AccountActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
         binding.loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
