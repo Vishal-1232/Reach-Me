@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.reachme.Models.Users;
 import com.example.reachme.databinding.ActivitySettingsBinding;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +33,8 @@ import java.util.HashMap;
 public class SettingsActivity extends AppCompatActivity {
 
     ActivitySettingsBinding binding;
+
+    ProgressDialog progressDialog;
 
     FirebaseAuth auth;
     FirebaseDatabase database;
@@ -56,18 +60,40 @@ public class SettingsActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Updating");
         binding.save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String userName = binding.etname.getText().toString();
                 String about = binding.about.getText().toString();
 
+                if(binding.etname.getText().toString().isEmpty())
+                {
+                    binding.etname.setError("Required");
+                    return;
+                }
+
+                progressDialog.show();
                 HashMap<String,Object>obj = new HashMap<>();
                 obj.put("userName",userName);
                 obj.put("about",about);
 
                 database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
-                        .updateChildren(obj);
+                        .updateChildren(obj)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                progressDialog.dismiss();
+                                Toast.makeText(SettingsActivity.this, "Information updated", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(SettingsActivity.this, "Error:"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 
@@ -103,6 +129,7 @@ public class SettingsActivity extends AppCompatActivity {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.setType("image/*");
                 startActivityForResult(intent,33);
+                //Toast.makeText(SettingsActivity.this, "Profile photo updated", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -141,5 +168,6 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             });
         }
+
     }
 }

@@ -47,14 +47,19 @@ public class DeleteAccountActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         getSupportActionBar().hide();
 
+
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();
 
+        uid = FirebaseAuth.getInstance().getUid();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+       // deleteProfilePic();
+
         binding.backArw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DeleteAccountActivity.this,AccountActivity.class);
+                Intent intent = new Intent(DeleteAccountActivity.this, AccountActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
@@ -71,8 +76,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
 
 
 
-                uid = FirebaseAuth.getInstance().getUid();
-                user = FirebaseAuth.getInstance().getCurrentUser();
+
 
                 //Toast.makeText(DeleteAccountActivity.this, pass+" : "+mail, Toast.LENGTH_SHORT).show();
 
@@ -104,6 +108,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
 
     private void deleteUser() {
 
+        deleteProfilePic();
         user.delete()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -112,8 +117,9 @@ public class DeleteAccountActivity extends AppCompatActivity {
                             Toast.makeText(DeleteAccountActivity.this, "User account deleted.", Toast.LENGTH_SHORT).show();
                             // FirebaseDatabase database = FirebaseDatabase.getInstance();
 
+                            // deleteProfilePic();
                             clearChats();
-                           // deleteProfilePic();
+
                             database.getReference().child("Users").
                                     child(uid).removeValue();
 
@@ -134,22 +140,22 @@ public class DeleteAccountActivity extends AppCompatActivity {
 
     private void deleteProfilePic() {   // Not working
         // Create a storage reference from our app
-        StorageReference storageRef = storage.getReference();
-
-// Create a reference to the file to delete
-        final StorageReference reference = storage.getReference().child("Profile Pictures")
-                .child(uid);
+        //StorageReference reference= storage.getReference().child("Profile Pictures/"+uid);
+        StorageReference reference = storage.getReference().child("Profile Pictures/"+uid);
 
 // Delete the file
         reference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 // File deleted successfully
+                Toast.makeText(DeleteAccountActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Uh-oh, an error occurred!
+                Toast.makeText(DeleteAccountActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -160,7 +166,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Users users = dataSnapshot.getValue(Users.class);
-                     users.setUserID(dataSnapshot.getKey());
+                    users.setUserID(dataSnapshot.getKey());
                     if (!users.getUserID().equals(uid)) {
                         database.getReference().child("Chats").
                                 child(uid + dataSnapshot.getKey()).removeValue();
