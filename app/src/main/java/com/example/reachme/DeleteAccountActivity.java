@@ -104,7 +104,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
                             // FirebaseDatabase database = FirebaseDatabase.getInstance();
 
                             clearChats();
-                            deleteProfilePic();
+                           // deleteProfilePic();
                             database.getReference().child("Users").
                                     child(uid).removeValue();
 
@@ -123,7 +123,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
                 });
     }
 
-    private void deleteProfilePic() {
+    private void deleteProfilePic() {   // Not working
         // Create a storage reference from our app
         StorageReference storageRef = storage.getReference();
 

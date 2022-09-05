@@ -1,17 +1,24 @@
 package com.example.reachme.Models;
 
-public class Users {
-    String profilePic,userName,password,userID,lastMessage,lastSeen,mail,about;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
-    public Users(String profilePic, String userName, String password, String userID, String lastMessage, String lastSeen, String mail, String about) {
+public class Users {
+    String profilePic,userName,password,userID,lastMessage,mail,about,connectionStatus;
+    long lastSeen;
+
+
+    public Users(String profilePic, String userName, String password, String userID, String lastMessage, String mail, String about, long lastSeen, String connectionStatus) {
         this.profilePic = profilePic;
         this.userName = userName;
         this.password = password;
         this.userID = userID;
         this.lastMessage = lastMessage;
-        this.lastSeen = lastSeen;
         this.mail = mail;
         this.about = about;
+        this.lastSeen = lastSeen;
+        this.connectionStatus = connectionStatus;
     }
 
     public Users(){};
@@ -65,11 +72,11 @@ public class Users {
         this.lastMessage = lastMessage;
     }
 
-    public String getLastSeen() {
+    public long getLastSeen() {
         return lastSeen;
     }
 
-    public void setLastSeen(String lastSeen) {
+    public void setLastSeen(long lastSeen) {
         this.lastSeen = lastSeen;
     }
 
@@ -87,5 +94,23 @@ public class Users {
 
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    public String getConnectionStatus() {
+        return connectionStatus;
+    }
+
+    public void setConnectionStatus(String connectionStatus) {
+        this.connectionStatus = connectionStatus;
+    }
+
+    public String getTimeDate(long timeStamp){
+        try{
+            Date netDate = (new Date(timeStamp));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
+            return simpleDateFormat.format(netDate);
+        }catch (Exception e){
+            return "Time";
+        }
     }
 }

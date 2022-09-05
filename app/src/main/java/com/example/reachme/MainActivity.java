@@ -16,7 +16,15 @@ import com.example.reachme.Adapters.FragmentsAdapter;
 import com.example.reachme.Adapters.UsersAdapter;
 import com.example.reachme.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,6 +45,35 @@ public class MainActivity extends AppCompatActivity {
         binding.viewPager.setAdapter(new FragmentsAdapter(getSupportFragmentManager()));
         binding.tabLayout.setupWithViewPager(binding.viewPager);
 
+        manageConnections();
+    }
+
+    private void manageConnections() {
+       // final DatabaseReference connectionReference = database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid());
+        String uid = FirebaseAuth.getInstance().getUid();
+        final DatabaseReference connectionReference = database.getReference().child("Users/"+uid+"/connectionStatus");
+        final DatabaseReference lastSeen = database.getReference().child("Users/"+uid+"/lastSeen");
+        final DatabaseReference infoConnected = database.getReference(".info/connected");
+
+        infoConnected.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+                    connectionReference.setValue("Online");
+                    connectionReference.onDisconnect().setValue("Offline");
+                   lastSeen.onDisconnect().setValue(ServerValue.TIMESTAMP);
+                } else {
+                    Toast.makeText(MainActivity.this, "Not connected", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Log.w(TAG, "Listener was cancelled");
+            }
+        });
     }
 
     @Override

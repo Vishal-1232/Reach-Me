@@ -7,20 +7,28 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.reachme.Adapters.ChatAdapter;
 import com.example.reachme.Models.MessageModel;
+import com.example.reachme.Models.Users;
 import com.example.reachme.databinding.ActivityChatsDetailedBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class ChatsDetailedActivity extends AppCompatActivity {
 
@@ -46,6 +54,32 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         String profilePic = getIntent().getStringExtra("profilePic");
 
         binding.name.setText(userName);
+
+        // Last seen
+        DatabaseReference conn = database.getReference().child("Users/"+reciverId);
+        conn.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String connectionStatus = snapshot.child("connectionStatus").getValue().toString();
+                String lastSeen = snapshot.child("lastSeen").getValue().toString();
+
+                String set = "";
+                if (!connectionStatus.equals("Online"))
+                {
+                    set = "Last seen : "+getTimeDate(Long.parseLong(lastSeen));
+                }else{
+                    set = connectionStatus;
+                }
+                binding.status.setText(set);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         Picasso.get().load(profilePic).placeholder(R.drawable.man).into(binding.profileImage);
 
         binding.back.setOnClickListener(new View.OnClickListener() {
@@ -129,5 +163,14 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         });
 
     }
-
+    public String getTimeDate(long timeStamp)
+    {
+        try{
+            Date netDate = (new Date(timeStamp));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM d  h:mm a", Locale.getDefault());
+            return simpleDateFormat.format(netDate);
+        }catch (Exception e){
+            return "Time";
+        }
+    }
 }

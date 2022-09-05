@@ -26,13 +26,13 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/back" />
+                app:srcCompat="@drawable/arrow" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="5dp"
                 android:padding="5dp"
                 android:src="@drawable/man"
                 app:civ_border_color="#B32F2F"
@@ -75,17 +75,34 @@
 
             <TextView
                 android:id="@+id/name"
-                android:layout_width="119dp"
-                android:layout_height="41dp"
-                android:layout_marginStart="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
-                android:text="User Namesdsdsd656sd"
+                android:text="vishal mausnxuifi 214d5"
                 android:textColor="#FFFFFF"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/status"
+                app:layout_constraintHorizontal_bias="0.15"
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.17" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="150dp"
+                android:layout_height="31dp"
+                android:text="Last seen: 12:15 pm Mon jiak,d adfas dfdsf df sdf df ds "
+                android:textColor="#F8F4F4"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                app:layout_constraintHorizontal_bias="0.333"
+                app:layout_constraintStart_toEndOf="@+id/profile_image"
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                app:layout_constraintVertical_bias="0.066" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.Toolbar>
@@ -96,6 +113,8 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/linear"
         android:layout_below="@+id/toolbar"
+        android:layout_marginTop="-2dp"
+        android:layout_marginBottom="4dp"
         android:background="#FF80AB" />
 
     <LinearLayout
