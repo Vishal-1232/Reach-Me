@@ -54,7 +54,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
 
         uid = FirebaseAuth.getInstance().getUid();
         user = FirebaseAuth.getInstance().getCurrentUser();
-       // deleteProfilePic();
+        //deleteProfilePic();
 
         binding.backArw.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,13 +73,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
                     binding.password.setError("Enter your password");
                     return;
                 }
-
-
-
-
-
                 //Toast.makeText(DeleteAccountActivity.this, pass+" : "+mail, Toast.LENGTH_SHORT).show();
-
                 AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), binding.password.getText().toString());
                 // credential = GoogleAuthProvider.getCredential(user.getEmail(),"6554");
                 // Toast.makeText(DeleteAccountActivity.this, credential.toString(), Toast.LENGTH_SHORT).show();
@@ -90,15 +84,11 @@ public class DeleteAccountActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Toast.makeText(DeleteAccountActivity.this, "Reauthentication success", Toast.LENGTH_SHORT).show();
                                 deleteUser();
-
-
                             } else {
                                 Toast.makeText(DeleteAccountActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
-
                         }
                     });
-
                 } catch (Exception e) {
                     Toast.makeText(DeleteAccountActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -108,34 +98,38 @@ public class DeleteAccountActivity extends AppCompatActivity {
 
     private void deleteUser() {
 
-        deleteProfilePic();
-        user.delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+        database.getReference().child("Users").
+                child(uid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(DeleteAccountActivity.this, "User account deleted.", Toast.LENGTH_SHORT).show();
-                            // FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    public void onSuccess(Void unused) {
+                        clearChats();
+                        deleteProfilePic();
 
-                            // deleteProfilePic();
-                            clearChats();
+                        user.delete()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(DeleteAccountActivity.this, "User account deleted.", Toast.LENGTH_SHORT).show();
 
-                            database.getReference().child("Users").
-                                    child(uid).removeValue();
+                                        } else {
+                                            Toast.makeText(DeleteAccountActivity.this, "Error:" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
-
-                            FirebaseAuth.getInstance().signOut(); // need to sign out user otherwise signin activity redirect us to main activity
-
-                            Intent intent = new Intent(DeleteAccountActivity.this, SignInActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(DeleteAccountActivity.this, "Error:" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
+                                        }
+                                    }
+                                });
                     }
                 });
+
+
+    }
+
+    private void reDirectToSignInActivity() {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(DeleteAccountActivity.this, SignInActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     private void deleteProfilePic() {   // Not working
@@ -148,6 +142,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 // File deleted successfully
+                reDirectToSignInActivity();
                 Toast.makeText(DeleteAccountActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
