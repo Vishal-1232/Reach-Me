@@ -23,10 +23,11 @@ public class Users {
 
     public Users(){};
 //  sign up constructor
-    public Users(String userName,String password,String mail){
+    public Users(String userName,String password,String mail,String connectionStatus){
         this.userName = userName;
         this.password = password;
         this.mail = mail;
+        this.connectionStatus = connectionStatus;
     }
 
     public String getProfilePic() {
