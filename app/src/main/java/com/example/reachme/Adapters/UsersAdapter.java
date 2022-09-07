@@ -1,5 +1,7 @@
 package com.example.reachme.Adapters;
 
+import static android.view.View.INVISIBLE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -67,6 +69,13 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> 
                             }
                         });
 
+        if (user.getConnectionStatus().equals("Online"))
+        {
+            holder.online.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.online.setVisibility(INVISIBLE);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,12 +188,13 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> 
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {
-        ImageView profilePic;
+        ImageView profilePic,online;
         TextView userName,lastMsg;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
             profilePic = itemView.findViewById(R.id.profile_image);
+            online = itemView.findViewById(R.id.online);
             userName = itemView.findViewById(R.id.userName);
             lastMsg = itemView.findViewById(R.id.lastMsg);
         }

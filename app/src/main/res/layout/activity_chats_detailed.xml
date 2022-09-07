@@ -21,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="31dp"
+                android:layout_height="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -58,10 +58,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
+                android:tint="#76FF03"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/imageView3"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/telephone" />
+                app:srcCompat="@drawable/call" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -77,31 +78,30 @@
                 android:id="@+id/name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:inputType="textMultiLine"
-                android:text="vishal mausnxuifi 214d5"
+                android:text="123456"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/status"
-                app:layout_constraintHorizontal_bias="0.15"
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.17" />
+                app:layout_constraintVertical_bias="0.195" />
 
             <TextView
                 android:id="@+id/status"
-                android:layout_width="150dp"
-                android:layout_height="31dp"
-                android:text="Last seen: 12:15 pm Mon jiak,d adfas dfdsf df sdf df ds "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="8dp"
+                android:text="Last seen: Mon tue"
                 android:textColor="#F8F4F4"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                app:layout_constraintHorizontal_bias="0.333"
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
                 app:layout_constraintTop_toBottomOf="@+id/name"
-                app:layout_constraintVertical_bias="0.066" />
+                app:layout_constraintVertical_bias="0.454" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
