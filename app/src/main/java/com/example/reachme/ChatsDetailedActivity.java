@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.reachme.Adapters.ChatAdapter;
@@ -44,7 +47,8 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityChatsDetailedBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getSupportActionBar().hide();
+        setSupportActionBar(binding.toolbar);
+
 
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -175,5 +179,48 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         }catch (Exception e){
             return "Time";
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.menu2,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.clearChats:
+                clearChats();
+                Toast.makeText(this, "Chats cleared", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.block:
+                break;
+            case R.id.report:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void clearChats() {
+        database.getReference().child("Users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Users users = dataSnapshot.getValue(Users.class);
+                    users.setUserID(dataSnapshot.getKey());
+                    if (!users.getUserID().equals(auth.getUid())) {
+                        database.getReference().child("Chats").
+                                child(auth.getUid() + dataSnapshot.getKey()).removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 }

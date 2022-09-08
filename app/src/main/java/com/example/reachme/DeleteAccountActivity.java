@@ -29,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.HashMap;
+
 public class DeleteAccountActivity extends AppCompatActivity {
 
     ActivityDeleteAccountBinding binding;
@@ -45,7 +47,6 @@ public class DeleteAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityDeleteAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getSupportActionBar().hide();
 
 
         database = FirebaseDatabase.getInstance();
@@ -97,9 +98,15 @@ public class DeleteAccountActivity extends AppCompatActivity {
     }
 
     private void deleteUser() {
+        String name = user.getDisplayName();
+        HashMap<String,Object>obj = new HashMap<>();
+        obj.put("password","NULL");
+        //obj.put("mail","");
+        obj.put("userName",name+"(Account Deleted)");
+        obj.put("connectionStatus","Offline");
 
-        database.getReference().child("Users").
-                child(uid).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+        database.getReference().child("Users/"+uid).
+                updateChildren(obj).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
                         clearChats();
@@ -129,7 +136,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
         Intent intent = new Intent(DeleteAccountActivity.this, SignInActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     private void deleteProfilePic() {   // Not working
@@ -150,7 +157,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 // Uh-oh, an error occurred!
                 Toast.makeText(DeleteAccountActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-
+                reDirectToSignInActivity();
             }
         });
     }

@@ -30,7 +30,6 @@ public class GroupChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityGroupChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getSupportActionBar().hide();
 
         binding.back.setOnClickListener(new View.OnClickListener() {
             @Override

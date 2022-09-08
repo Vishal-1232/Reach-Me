@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar2);
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -50,14 +51,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void manageConnections() {
-       // final DatabaseReference connectionReference = database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid());
+        // final DatabaseReference connectionReference = database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid());
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
-        final DatabaseReference connectionReference = database.getReference().child("Users/"+uid+"/connectionStatus");
-        final DatabaseReference lastSeen = database.getReference().child("Users/"+uid+"/lastSeen");
+        final DatabaseReference connectionReference = database.getReference().child("Users/" + uid + "/connectionStatus");
+        final DatabaseReference lastSeen = database.getReference().child("Users/" + uid + "/lastSeen");
         final DatabaseReference infoConnected = database.getReference(".info/connected");
-        if (user != null)
-        {
+        if (user != null) {
             infoConnected.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

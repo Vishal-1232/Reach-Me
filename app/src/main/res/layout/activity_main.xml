@@ -7,6 +7,16 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EC2A6C"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:popupTheme="@style/Theme.AppCompat"
+        />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
@@ -14,7 +24,6 @@
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="88dp"
         android:background="#EC2A6C"
-        android:elevation="12dp"
         app:tabIndicatorColor="@color/white"
         app:tabSelectedTextColor="@color/white"
         app:tabMaxWidth="0dp"

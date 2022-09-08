@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/clearChats"
+        android:title="Clear chat"
+        />
+    <item
+        android:id="@+id/block"
+        android:title="Block"
+        />
+    <item
+        android:id="@+id/report"
+        android:title="Report"
+        />
+
+</menu>

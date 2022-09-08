@@ -30,7 +30,6 @@ public class AccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAccountBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getSupportActionBar().hide();
 
         binding.backArw.setOnClickListener(new View.OnClickListener() {
             @Override
