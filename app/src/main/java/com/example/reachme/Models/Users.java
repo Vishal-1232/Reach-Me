@@ -5,20 +5,20 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Users {
-    String profilePic,userName,password,userID,lastMessage,mail,about,connectionStatus;
+    String profilePic,coverImage,userName,password,userID,lastMessage,mail,about,connectionStatus;
     long lastSeen;
 
-
-    public Users(String profilePic, String userName, String password, String userID, String lastMessage, String mail, String about, long lastSeen, String connectionStatus) {
+    public Users(String profilePic, String coverImage, String userName, String password, String userID, String lastMessage, String mail, String about, String connectionStatus, long lastSeen) {
         this.profilePic = profilePic;
+        this.coverImage = coverImage;
         this.userName = userName;
         this.password = password;
         this.userID = userID;
         this.lastMessage = lastMessage;
         this.mail = mail;
         this.about = about;
-        this.lastSeen = lastSeen;
         this.connectionStatus = connectionStatus;
+        this.lastSeen = lastSeen;
     }
 
     public Users(){};
@@ -103,6 +103,14 @@ public class Users {
 
     public void setConnectionStatus(String connectionStatus) {
         this.connectionStatus = connectionStatus;
+    }
+
+    public String getCoverImage() {
+        return coverImage;
+    }
+
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
     }
 
     public String getTimeDate(long timeStamp){

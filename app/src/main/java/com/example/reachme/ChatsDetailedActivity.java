@@ -50,6 +50,8 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
 
+
+
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
@@ -60,6 +62,22 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         String profilePic = getIntent().getStringExtra("profilePic");
 
         binding.name.setText(userName);
+        binding.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatsDetailedActivity.this,ProfileViewActivity.class);
+                intent.putExtra("recId",reciverId);
+                startActivity(intent);
+            }
+        });
+        binding.status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatsDetailedActivity.this,ProfileViewActivity.class);
+                intent.putExtra("recId",reciverId);
+                startActivity(intent);
+            }
+        });
 
         // Last seen
         DatabaseReference conn = database.getReference().child("Users/"+reciverId);
@@ -87,7 +105,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         });
 
 
-        Picasso.get().load(profilePic).placeholder(R.drawable.man).into(binding.profileImage);
+        Picasso.get().load(profilePic).placeholder(R.drawable.man).into(binding.profileimg);
 
         binding.back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +113,12 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                 /*Intent intent = new Intent(ChatsDetailedActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();*/
+                ChatsDetailedActivity.super.onBackPressed();
+            }
+        });
+        binding.profileimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 ChatsDetailedActivity.super.onBackPressed();
             }
         });

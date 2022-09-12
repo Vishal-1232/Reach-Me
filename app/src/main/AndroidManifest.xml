@@ -16,6 +16,9 @@
         android:theme="@style/Theme.ReachMe"
         tools:targetApi="31">
         <activity
+            android:name=".ProfileViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".DeleteAccountActivity"
             android:exported="false" />
         <activity

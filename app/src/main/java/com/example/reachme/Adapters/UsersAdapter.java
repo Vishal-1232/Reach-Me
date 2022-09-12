@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reachme.ChatsDetailedActivity;
-import com.example.reachme.Fragments.ChatsFragment;
 import com.example.reachme.R;
 
 import com.example.reachme.Models.Users;
@@ -193,7 +192,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> 
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
-            profilePic = itemView.findViewById(R.id.profile_image);
+            profilePic = itemView.findViewById(R.id.profileimg);
             online = itemView.findViewById(R.id.online);
             userName = itemView.findViewById(R.id.userName);
             lastMsg = itemView.findViewById(R.id.lastMsg);
