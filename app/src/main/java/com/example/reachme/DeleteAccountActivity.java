@@ -143,13 +143,14 @@ public class DeleteAccountActivity extends AppCompatActivity {
         // Create a storage reference from our app
         //StorageReference reference= storage.getReference().child("Profile Pictures/"+uid);
         StorageReference reference = storage.getReference().child("Profile Pictures/"+uid);
+        StorageReference reference1 = storage.getReference().child("Cover Images/"+uid);
 
 // Delete the file
         reference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 // File deleted successfully
-                reDirectToSignInActivity();
+                //reDirectToSignInActivity();
                 Toast.makeText(DeleteAccountActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -157,6 +158,17 @@ public class DeleteAccountActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 // Uh-oh, an error occurred!
                 Toast.makeText(DeleteAccountActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                //reDirectToSignInActivity();
+            }
+        });
+        reference1.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                reDirectToSignInActivity();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
                 reDirectToSignInActivity();
             }
         });

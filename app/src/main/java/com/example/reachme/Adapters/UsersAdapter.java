@@ -24,7 +24,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> {
     ArrayList<Users> list;
@@ -56,7 +59,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> 
                                 if (snapshot.hasChildren()){
                                     for(DataSnapshot snapshot1 : snapshot.getChildren()){
                                         holder.lastMsg.setText(snapshot1.child("message").getValue(String.class).toString());
-
+                                        Long timing = snapshot1.child("timeStamp").getValue(Long.class);
+                                        holder.time.setText(getTimeDate(timing));
                                     }
 
                                 }
@@ -188,7 +192,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> 
 
     public class viewHolder extends RecyclerView.ViewHolder {
         ImageView profilePic,online;
-        TextView userName,lastMsg;
+        TextView userName,lastMsg,time;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
@@ -196,6 +200,18 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> 
             online = itemView.findViewById(R.id.online);
             userName = itemView.findViewById(R.id.userName);
             lastMsg = itemView.findViewById(R.id.lastMsg);
+            time = itemView.findViewById(R.id.timestmp);
+        }
+    }
+
+    public String getTimeDate(long timeStamp)
+    {
+        try{
+            Date netDate = (new Date(timeStamp));
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d  h:mm a", Locale.getDefault());
+            return simpleDateFormat.format(netDate);
+        }catch (Exception e){
+            return "Time";
         }
     }
 }
