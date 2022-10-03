@@ -9,7 +9,7 @@
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/drawable/btn_bg.xml" value="0.1315" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/drawable/linear_bg.xml" value="0.1315" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/activity_account.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/activity_chats_detailed.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/activity_chats_detailed.xml" value="0.22" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/activity_delete_account.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/activity_forget_password.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/activity_group_chat.xml" value="0.3333333333333333" />
@@ -19,10 +19,11 @@
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/activity_sign_in.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/activity_sign_up.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/bg_et_message.xml" value="0.1" />
+        <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/emoji_text_view.xml" value="0.1145788798631894" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/fragment_calls.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/fragment_chats.xml" value="0.22" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/fragment_status.xml" value="0.1234375" />
-        <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/sample_reciver.xml" value="0.5" />
+        <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/sample_reciver.xml" value="0.42857142857142855" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/sample_sender.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/sample_show_status.xml" value="0.22" />
         <entry key="..\:/Users/SUSHIL/AndroidStudioProjects/Reachme/app/src/main/res/layout/sample_show_users.xml" value="0.4466666666666667" />

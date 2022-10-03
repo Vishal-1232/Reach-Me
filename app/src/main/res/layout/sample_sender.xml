@@ -9,6 +9,7 @@
     android:layout_marginRight="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/smsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -17,6 +18,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="7dp"
         android:layout_marginRight="7dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/bg_sender"
         android:maxWidth="310dp"
         android:maxHeight="400dp"
@@ -60,5 +62,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/sfeeling"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignBottom="@id/smsg"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="42dp"
+        android:layout_marginBottom="-32dp" />
 
 </RelativeLayout>

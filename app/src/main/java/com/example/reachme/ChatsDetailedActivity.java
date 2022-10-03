@@ -2,13 +2,16 @@ package com.example.reachme;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.EmojiCompatConfigurationView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -27,6 +30,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.vanniktech.emoji.EmojiManager;
+import com.vanniktech.emoji.EmojiPopup;
+
+import com.vanniktech.emoji.twitter.TwitterEmojiProvider;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,12 +57,10 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
 
-
-
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
-       final String senderId = auth.getUid();
+        final String senderId = auth.getUid();
 
         String reciverId = getIntent().getStringExtra("userID");
         String userName = getIntent().getStringExtra("userName");
@@ -65,22 +70,22 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         binding.name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChatsDetailedActivity.this,ProfileViewActivity.class);
-                intent.putExtra("recId",reciverId);
+                Intent intent = new Intent(ChatsDetailedActivity.this, ProfileViewActivity.class);
+                intent.putExtra("recId", reciverId);
                 startActivity(intent);
             }
         });
         binding.status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChatsDetailedActivity.this,ProfileViewActivity.class);
-                intent.putExtra("recId",reciverId);
+                Intent intent = new Intent(ChatsDetailedActivity.this, ProfileViewActivity.class);
+                intent.putExtra("recId", reciverId);
                 startActivity(intent);
             }
         });
 
         // Last seen
-        DatabaseReference conn = database.getReference().child("Users/"+reciverId);
+        DatabaseReference conn = database.getReference().child("Users/" + reciverId);
 
         conn.addValueEventListener(new ValueEventListener() {
             @Override
@@ -89,10 +94,9 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                 String lastSeen = snapshot.child("lastSeen").getValue().toString();
 
                 String set = "";
-                if (!connectionStatus.equals("Online"))
-                {
-                    set = "Last seen : "+getTimeDate(Long.parseLong(lastSeen));
-                }else{
+                if (!connectionStatus.equals("Online")) {
+                    set = "Last seen : " + getTimeDate(Long.parseLong(lastSeen));
+                } else {
                     set = connectionStatus;
                 }
                 binding.status.setText(set);
@@ -124,9 +128,9 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         });
 
         // chat Adapter set
-        ArrayList<MessageModel>messageModels = new ArrayList<>();
+        ArrayList<MessageModel> messageModels = new ArrayList<>();
 
-        final ChatAdapter chatAdapter = new ChatAdapter(this,messageModels,reciverId);
+        final ChatAdapter chatAdapter = new ChatAdapter(this, messageModels, reciverId);
         binding.chatsRecyclerView.setAdapter(chatAdapter);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -144,14 +148,14 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         messageModels.clear();
-                        for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                             MessageModel model = snapshot1.getValue(MessageModel.class);
                             model.setMessageId(snapshot1.getKey());
                             messageModels.add(model);
                         }
                         chatAdapter.notifyDataSetChanged();
                         //binding.chatsRecyclerView.smoothScrollToPosition(binding.chatsRecyclerView.getAdapter().getItemCount());
-                        binding.chatsRecyclerView.scrollToPosition(binding.chatsRecyclerView.getAdapter().getItemCount()-1);
+                        binding.chatsRecyclerView.scrollToPosition(binding.chatsRecyclerView.getAdapter().getItemCount() - 1);
                     }
 
                     @Override
@@ -160,60 +164,74 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                     }
                 });
 
+        // initialize emoji popup
+        EmojiManager.install(new TwitterEmojiProvider());
+
+        EmojiPopup emojiPopup = EmojiPopup.Builder.fromRootView(binding.getRoot()).build(binding.message);
+        binding.emoji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                emojiPopup.toggle();
+            }
+        });
+
         // storing chats in database
 
         binding.send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (binding.message.getText().toString().isEmpty()){
+                if (binding.message.getText().toString().isEmpty()) {
                     binding.message.setError("Enter text to send");
                     return;
                 }
 
                 String message = binding.message.getText().toString();
-                final MessageModel model = new MessageModel(senderId,message);
+                final MessageModel model = new MessageModel(senderId, message);
                 model.setTimeStamp(new Date().getTime());
                 binding.message.setText("");
 
                 // storing message in database
-                database.getReference().child("Chats").child(senderRoom).push()
+                String randomKey = database.getReference().push().getKey();
+                database.getReference().child("Chats").child(senderRoom).child(randomKey)
                         .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        database.getReference().child("Chats").child(reciverRoom).push()
-                                .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                database.getReference().child("Chats").child(reciverRoom).child(randomKey)
+                                        .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
 
-                                    }
-                                });
-                    }
-                });
+                                            }
+                                        });
+                            }
+                        });
             }
         });
 
+
+
     }
-    public String getTimeDate(long timeStamp)
-    {
-        try{
+
+    public String getTimeDate(long timeStamp) {
+        try {
             Date netDate = (new Date(timeStamp));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM d  h:mm a", Locale.getDefault());
             return simpleDateFormat.format(netDate);
-        }catch (Exception e){
+        } catch (Exception e) {
             return "Time";
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        getMenuInflater().inflate(R.menu.menu2,menu);
+        getMenuInflater().inflate(R.menu.menu2, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.clearChats:
                 clearChats();
                 Toast.makeText(this, "Chats cleared", Toast.LENGTH_SHORT).show();

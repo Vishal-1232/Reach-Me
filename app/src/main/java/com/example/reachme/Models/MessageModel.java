@@ -5,21 +5,25 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MessageModel {
-    String uid,message,messageId;
+    String uid, message, messageId;
     long timeStamp;
+    int feeling = -1;
 
-    public MessageModel(String uid, String message, String messageId, long timeStamp) {
+    public MessageModel(String uid, String message, String messageId, long timeStamp, int feeling) {
         this.uid = uid;
         this.message = message;
         this.messageId = messageId;
         this.timeStamp = timeStamp;
+        this.feeling = feeling;
     }
 
     public MessageModel(String uid, String message) {
         this.uid = uid;
         this.message = message;
     }
-    public MessageModel(){};
+
+    public MessageModel() {
+    }
 
     public String getMessageId() {
         return messageId;
@@ -45,6 +49,14 @@ public class MessageModel {
         this.message = message;
     }
 
+    public int getFeeling() {
+        return feeling;
+    }
+
+    public void setFeeling(int feeling) {
+        this.feeling = feeling;
+    }
+
     public long getTimeStamp() {
         return timeStamp;
     }
@@ -53,12 +65,12 @@ public class MessageModel {
         this.timeStamp = timeStamp;
     }
 
-    public String getTimeDate(long timeStamp){
-        try{
+    public String getTimeDate(long timeStamp) {
+        try {
             Date netDate = (new Date(timeStamp));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a", Locale.getDefault());
             return simpleDateFormat.format(netDate);
-        }catch (Exception e){
+        } catch (Exception e) {
             return "Time";
         }
     }
