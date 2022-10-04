@@ -151,6 +151,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
             if (messageModel.getFeeling() >= 0) {
                 ((SenderViewHolder) holder).feeling.setImageResource(reactions[messageModel.getFeeling()]);
+                ((SenderViewHolder) holder).feeling.setVisibility(View.VISIBLE);
+            }else{
+                ((SenderViewHolder) holder).feeling.setVisibility(View.GONE);
             }
 
             ((SenderViewHolder) holder).senderMsg.setOnTouchListener(new View.OnTouchListener() {
@@ -166,6 +169,9 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
             if (messageModel.getFeeling() >= 0) {
                 ((ReciverViewHolder) holder).feeling.setImageResource(reactions[messageModel.getFeeling()]);
+                ((ReciverViewHolder) holder).feeling.setVisibility(View.VISIBLE);
+            }else{
+                ((ReciverViewHolder) holder).feeling.setVisibility(View.GONE);
             }
 
             ((ReciverViewHolder) holder).reciverMsg.setOnTouchListener(new View.OnTouchListener() {
