@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,6 +87,35 @@ public class ChatsDetailedActivity extends AppCompatActivity {
             }
         });
 
+        // Typing indicator
+        final Handler handler = new Handler();
+        binding.message.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
+                        .child("connectionStatus").setValue("typing...");
+                handler.removeCallbacksAndMessages(null);
+                handler.postDelayed(userStoppedTyping,1000);
+            }
+            Runnable userStoppedTyping = new Runnable() {
+                @Override
+                public void run() {
+                    database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
+                            .child("connectionStatus").setValue("Online");
+                }
+            };
+        });
+
         // Last seen
         DatabaseReference conn = database.getReference().child("Users/" + reciverId);
 
@@ -94,7 +126,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                 String lastSeen = snapshot.child("lastSeen").getValue().toString();
 
                 String set = "";
-                if (!connectionStatus.equals("Online")) {
+                if (!connectionStatus.equals("Online") && !connectionStatus.equals("typing...")) {
                     set = "Last seen : " + getTimeDate(Long.parseLong(lastSeen));
                 } else {
                     set = connectionStatus;
@@ -208,8 +240,6 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                         });
             }
         });
-
-
 
     }
 
