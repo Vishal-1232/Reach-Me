@@ -1,6 +1,7 @@
 package com.example.reachme.Adapters;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -72,33 +73,86 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
         MessageModel messageModel = messageModels.get(position);
+        String senderID = FirebaseAuth.getInstance().getUid();
+        String senderRoom = senderID + recID;
+        String reciverRoom = recID + senderID;
 
         // deleting message
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                new AlertDialog.Builder(context)
-                        .setTitle("Delete")
-                        .setMessage("Are you sure you want to delete this message")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                String senderRoom = FirebaseAuth.getInstance().getUid() + recID;
-                                database.getReference().child("Chats").child(senderRoom)
-                                        .child(messageModel.getMessageId())
-                                        .setValue(null);
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        }).show();
-                return false;
-            }
-        });
+        if (holder.getClass() == SenderViewHolder.class && !messageModel.getMessage().equals("This Message is Deleted")) {
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Dialog dialog = new Dialog(context);
+                    dialog.setContentView(R.layout.custom_dialog);
+                    //dialog.setCancelable();
+                    TextView deleteForMe = dialog.findViewById(R.id.dltForMe);
+                    TextView cancel = dialog.findViewById(R.id.cancel);
+                    TextView deleteForEverryone = dialog.findViewById(R.id.dltForEveryone);
+
+                    deleteForMe.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            database.getReference().child("Chats").child(senderRoom)
+                                    .child(messageModel.getMessageId())
+                                    .setValue(null);
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    deleteForEverryone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            database.getReference().child("Chats").child(senderRoom)
+                                    .child(messageModel.getMessageId()).child("message")
+                                    .setValue("This Message is Deleted");
+                            database.getReference().child("Chats").child(reciverRoom)
+                                    .child(messageModel.getMessageId()).child("message")
+                                    .setValue("This Message is Deleted");
+                            dialog.dismiss();
+                        }
+                    });
+
+                    dialog.show();
+                    return false;
+                }
+            });
+        } else {
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    new AlertDialog.Builder(context)
+                            .setTitle("Delete")
+                            .setMessage("Are you sure you want to delete this message")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                    database.getReference().child("Chats").child(senderRoom)
+                                            .child(messageModel.getMessageId())
+                                            .setValue(null);
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            }).show();
+                    return false;
+                }
+            });
+        }
+
 
         // Reactions
         int[] reactions = new int[]{
@@ -125,10 +179,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
 
             // storing felling in database
-            String senderID = FirebaseAuth.getInstance().getUid();
-            String senderRoom = senderID + recID;
-            String reciverRoom = recID + senderID;
-
             messageModel.setFeeling(pos);
             FirebaseDatabase.getInstance().getReference().child("Chats")
                     .child(senderRoom)
@@ -152,7 +202,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             if (messageModel.getFeeling() >= 0) {
                 ((SenderViewHolder) holder).feeling.setImageResource(reactions[messageModel.getFeeling()]);
                 ((SenderViewHolder) holder).feeling.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 ((SenderViewHolder) holder).feeling.setVisibility(View.GONE);
             }
 
@@ -170,7 +220,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             if (messageModel.getFeeling() >= 0) {
                 ((ReciverViewHolder) holder).feeling.setImageResource(reactions[messageModel.getFeeling()]);
                 ((ReciverViewHolder) holder).feeling.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 ((ReciverViewHolder) holder).feeling.setVisibility(View.GONE);
             }
 
