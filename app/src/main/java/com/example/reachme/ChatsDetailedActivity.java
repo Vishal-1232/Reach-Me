@@ -52,6 +52,8 @@ public class ChatsDetailedActivity extends AppCompatActivity {
     FirebaseDatabase database;
     FirebaseAuth auth;
 
+    String senderRoom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,7 +172,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
 
         // Chatting logic
 
-        final String senderRoom = senderId + reciverId;
+         senderRoom = senderId + reciverId;
         final String reciverRoom = reciverId + senderId;
 
         // getting chats from database
@@ -267,32 +269,18 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                 Toast.makeText(this, "Chats cleared", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.block:
+                Toast.makeText(this, "Feature will be available in next update", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.report:
+                Toast.makeText(this, "Feature will be available in next update", Toast.LENGTH_SHORT).show();
                 break;
+            default:
+                Toast.makeText(this, "INVALID SELECTION!!", Toast.LENGTH_SHORT).show();;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void clearChats() {
-        database.getReference().child("Users").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Users users = dataSnapshot.getValue(Users.class);
-                    users.setUserID(dataSnapshot.getKey());
-                    if (!users.getUserID().equals(auth.getUid())) {
-                        database.getReference().child("Chats").
-                                child(auth.getUid() + dataSnapshot.getKey()).removeValue();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+        database.getReference().child("Chats").child(senderRoom).setValue(null);
     }
 }

@@ -69,6 +69,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="Tap to add status update"
+        android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.31"
         app:layout_constraintStart_toEndOf="@+id/image_layout"
@@ -98,5 +100,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_layout"
         app:layout_constraintVertical_bias="0.88" />
+
+    <ImageView
+        android:id="@+id/deleteStatus"
+        android:layout_width="45dp"
+        android:layout_height="53dp"
+        android:background="?selectableItemBackground"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/add"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_delete_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

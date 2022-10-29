@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.reachme.Adapters.StatusAdapter;
 import com.example.reachme.Models.Status;
@@ -21,6 +22,7 @@ import com.example.reachme.Models.Users;
 import com.example.reachme.R;
 import com.example.reachme.databinding.FragmentStatusBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,12 +31,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class StatusFragment extends Fragment {
 
@@ -94,16 +98,16 @@ public class StatusFragment extends Fragment {
         FirebaseDatabase.getInstance().getReference().child("Users Status").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
+                if (snapshot.exists()) {
                     userStatuses.clear();
-                    for (DataSnapshot statusSnapshot : snapshot.getChildren()){
+                    for (DataSnapshot statusSnapshot : snapshot.getChildren()) {
                         UserStatus userStatus = new UserStatus();
                         userStatus.setName(statusSnapshot.child("name").getValue(String.class));
                         userStatus.setProfileImage(statusSnapshot.child("profileImage").getValue(String.class));
                         userStatus.setLastUpdated(statusSnapshot.child("lastUpdated").getValue(Long.class));
 
-                        ArrayList<Status>statusCount = new ArrayList<>();
-                        for (DataSnapshot StatusesSnapshot : statusSnapshot.child("statuses").getChildren()){
+                        ArrayList<Status> statusCount = new ArrayList<>();
+                        for (DataSnapshot StatusesSnapshot : statusSnapshot.child("statuses").getChildren()) {
                             Status sampleStatus = StatusesSnapshot.getValue(Status.class);
                             statusCount.add(sampleStatus);
                         }
@@ -134,7 +138,7 @@ public class StatusFragment extends Fragment {
 
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 Date date = new Date();
-                StorageReference reference = storage.getReference().child("Status").child(date.getTime() + "");
+                StorageReference reference = storage.getReference().child("Status").child(FirebaseAuth.getInstance().getUid()).child(date.getTime() + "");
 
                 reference.putFile(data.getData()).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override

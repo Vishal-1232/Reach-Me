@@ -18,6 +18,7 @@ import com.example.reachme.Models.UserStatus;
 import com.example.reachme.R;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -69,7 +70,7 @@ public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.StatusView
             public void onClick(View view) {
                 ArrayList<MyStory> myStories = new ArrayList<>();
                 for (Status status : userStatus.getStatuses()){
-                    myStories.add(new MyStory(status.getImageURL()));
+                    myStories.add(new MyStory(status.getImageURL(),new Date(status.getTimestamp())));
                 }
 
                 new StoryView.Builder(((MainActivity)context).getSupportFragmentManager())
