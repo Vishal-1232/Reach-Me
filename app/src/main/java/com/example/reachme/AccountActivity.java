@@ -34,15 +34,22 @@ public class AccountActivity extends AppCompatActivity {
         binding.backArw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AccountActivity.this,SettingsActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+//                Intent intent = new Intent(AccountActivity.this,SettingsActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+                finish();
             }
         });
         binding.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(AccountActivity.this,DeleteAccountActivity.class));
+            }
+        });
+        binding.privacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AccountActivity.this,PrivacyActivity.class));
             }
         });
     }

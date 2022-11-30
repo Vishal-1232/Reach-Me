@@ -60,6 +60,7 @@ public class ProfileViewActivity extends AppCompatActivity {
                         .into(binding.cover);
 
                 binding.abt.setText(users.getAbout());
+                binding.namE.setText(users.getUserName());
             }
 
             @Override

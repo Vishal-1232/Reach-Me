@@ -4,7 +4,8 @@
     package="com.example.reachme">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ReachMe"
         tools:targetApi="31">
+        <activity
+            android:name=".PrivacyActivity"
+            android:exported="false" />
         <activity
             android:name=".ProfileViewActivity"
             android:exported="false" />

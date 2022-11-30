@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -61,43 +62,53 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void manageAuthentication() {
-        BiometricManager biometricManager = BiometricManager.from(this);
-        switch (biometricManager.canAuthenticate()){
-            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                Toast.makeText(this, "Sensor not available", Toast.LENGTH_SHORT).show();
-                break;
-            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                Toast.makeText(this, "Not working", Toast.LENGTH_SHORT).show();
-                break;
-            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                Toast.makeText(this, "Fingerprint not assigned", Toast.LENGTH_SHORT).show();
+        Boolean switchVal;
 
+        SharedPreferences preferences = getSharedPreferences("shrdPref", MODE_PRIVATE);
+
+        switchVal = preferences.getBoolean("switch", false);
+
+        if (switchVal) {
+            BiometricManager biometricManager = BiometricManager.from(this);
+            switch (biometricManager.canAuthenticate()) {
+                case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                    Toast.makeText(this, "Sensor not available", Toast.LENGTH_SHORT).show();
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                    Toast.makeText(this, "Not working", Toast.LENGTH_SHORT).show();
+                    break;
+                case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                    Toast.makeText(this, "Fingerprint not assigned", Toast.LENGTH_SHORT).show();
+
+            }
+            Executor executor = ContextCompat.getMainExecutor(this);
+            biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+                @Override
+                public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                    finish();
+                }
+
+                @Override
+                public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
+                    Toast.makeText(MainActivity.this, "Authentication Successful", Toast.LENGTH_SHORT).show();
+                    binding.getRoot().setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAuthenticationFailed() {
+                    super.onAuthenticationFailed();
+                    Toast.makeText(MainActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle("Reach Me")
+                    .setDescription("Use fingerprint to login").setDeviceCredentialAllowed(true).build();
+            biometricPrompt.authenticate(promptInfo);
+        }else{
+            binding.getRoot().setVisibility(View.VISIBLE);
         }
-        Executor executor = ContextCompat.getMainExecutor(this);
-        biometricPrompt=new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
-            @Override
-            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                super.onAuthenticationError(errorCode, errString);
-                finish();
-            }
-
-            @Override
-            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                super.onAuthenticationSucceeded(result);
-                Toast.makeText(MainActivity.this, "Authentication Successful", Toast.LENGTH_SHORT).show();
-                binding.getRoot().setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onAuthenticationFailed() {
-                super.onAuthenticationFailed();
-                Toast.makeText(MainActivity.this, "Authentication Failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        promptInfo = new BiometricPrompt.PromptInfo.Builder().setTitle("Reach Me")
-                .setDescription("Use fingerprint to login").setDeviceCredentialAllowed(true).build();
-        biometricPrompt.authenticate(promptInfo);
     }
 
     private void manageConnections() {

@@ -60,9 +60,10 @@ public class DeleteAccountActivity extends AppCompatActivity {
         binding.backArw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DeleteAccountActivity.this, AccountActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+//                Intent intent = new Intent(DeleteAccountActivity.this, AccountActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+                finish();
             }
         });
 

@@ -42,7 +42,7 @@
         android:layout_marginBottom="34dp"
         android:text="About"
         android:textColor="#ECE9E9"
-        android:textSize="34sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/abt"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
         android:layout_marginBottom="393dp"
         android:text="54d5dffffffffffsssdsd"
         android:textColor="#FBF9F9"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -70,5 +70,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow" />
+
+    <TextView
+        android:id="@+id/namE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vishal Kaushik"
+        android:textColor="#F1EEEE"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintEnd_toEndOf="@+id/profileimg"
+        app:layout_constraintStart_toStartOf="@+id/profileimg"
+        app:layout_constraintTop_toBottomOf="@+id/profileimg" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
