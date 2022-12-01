@@ -96,6 +96,13 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+        // facebook sign in
+        binding.face.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(SignInActivity.this, "Feature not available yet", Toast.LENGTH_SHORT).show();
+            }
+        });
         //      Google sign in
         google = findViewById(R.id.google);
         // Initialize sign in options
@@ -161,9 +168,11 @@ public class SignInActivity extends AppCompatActivity {
                                         if (task.isSuccessful()) {
                                             // When task is successful
                                             // Redirect to profile activity
-                                            startActivity(new Intent(SignInActivity.this
+                                            /*startActivity(new Intent(SignInActivity.this
                                                     , MainActivity.class)
-                                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));*/
+                                            startActivity(new Intent(SignInActivity.this,MainActivity.class));
+                                            finish();
                                             // Display Toast
                                             displayToast("Authentication successful");
 

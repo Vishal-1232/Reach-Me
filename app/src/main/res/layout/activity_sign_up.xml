@@ -113,12 +113,14 @@
         android:gravity="center">
 
         <ImageView
+            android:id="@+id/goog"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"
             android:src="@drawable/google" />
 
         <ImageView
+            android:id="@+id/face"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="20dp"
