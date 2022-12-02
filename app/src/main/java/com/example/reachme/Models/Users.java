@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Users {
-    String profilePic,coverImage,userName,password,userID,lastMessage,mail,about,connectionStatus;
+    String profilePic,coverImage,userName,password,userID,lastMessage,mail,about,connectionStatus,fcmTokken;
     long lastSeen;
 
-    public Users(String profilePic, String coverImage, String userName, String password, String userID, String lastMessage, String mail, String about, String connectionStatus, long lastSeen) {
+    public Users(String profilePic, String coverImage, String userName, String password, String userID, String lastMessage, String mail, String about, String connectionStatus, String fcmTokken, long lastSeen) {
         this.profilePic = profilePic;
         this.coverImage = coverImage;
         this.userName = userName;
@@ -18,20 +18,37 @@ public class Users {
         this.mail = mail;
         this.about = about;
         this.connectionStatus = connectionStatus;
+        this.fcmTokken = fcmTokken;
         this.lastSeen = lastSeen;
     }
 
     public Users(){};
 //  sign up constructor
-    public Users(String userName,String password,String mail,String connectionStatus){
+public Users(String userName,String password,String mail,String connectionStatus){
+    this.userName = userName;
+    this.password = password;
+    this.mail = mail;
+    this.connectionStatus = connectionStatus;
+
+}
+    public Users(String userName,String password,String mail,String connectionStatus,String fcmTokken){
         this.userName = userName;
         this.password = password;
         this.mail = mail;
         this.connectionStatus = connectionStatus;
+        this.fcmTokken = fcmTokken;
     }
 
     public String getProfilePic() {
         return profilePic;
+    }
+
+    public String getFcmTokken() {
+        return fcmTokken;
+    }
+
+    public void setFcmTokken(String fcmTokken) {
+        this.fcmTokken = fcmTokken;
     }
 
     public void setProfilePic(String profilePic) {

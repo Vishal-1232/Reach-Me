@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.annotations.Nullable;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -183,7 +184,7 @@ public class SignInActivity extends AppCompatActivity {
                                             users.setUserID(User.getUid());
                                             users.setUserName(User.getDisplayName());
                                             users.setProfilePic(User.getPhotoUrl().toString());
-                                            users.setMail(User.getEmail());
+                                            users.setMail(User.getEmail());;
                                             // users.setPhone(User.getPhoneNumber());
 
                                             database.getReference().child("Users").child(User.getUid()).setValue(users);

@@ -209,7 +209,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
             }
         });
 
-        // storing chats in database
+        // storing chats in database or sending messages
 
         binding.send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,7 +235,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                                         .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
-
+                                                sendNotification(message,reciverId);
                                             }
                                         });
                             }
@@ -243,6 +243,37 @@ public class ChatsDetailedActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void sendNotification(String message,String reciverId) {
+        final Users[] curr = new Users[2];
+
+        database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                curr[0] = snapshot.getValue(Users.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        database.getReference().child("Users/" + reciverId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        curr[1] = snapshot.getValue(Users.class);
+                        Toast.makeText(ChatsDetailedActivity.this, "Notification", Toast.LENGTH_SHORT).show();
+                        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(curr[1].getFcmTokken(), "New Message from "+curr[0].getUserName(),message,ChatsDetailedActivity.this,ChatsDetailedActivity.this);
+                        notificationsSender.SendNotifications();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     public String getTimeDate(long timeStamp) {
