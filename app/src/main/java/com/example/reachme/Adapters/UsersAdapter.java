@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reachme.ChatsDetailedActivity;
+import com.example.reachme.Encryption.AES;
 import com.example.reachme.R;
 
 import com.example.reachme.Models.Users;
@@ -58,7 +59,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> 
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.hasChildren()){
                                     for(DataSnapshot snapshot1 : snapshot.getChildren()){
-                                        holder.lastMsg.setText(snapshot1.child("message").getValue(String.class).toString());
+                                        holder.lastMsg.setText(AES.decrypt(snapshot1.child("message").getValue(String.class).toString()));
                                         Long timing = snapshot1.child("timeStamp").getValue(Long.class);
                                         holder.time.setText(getTimeDate(timing));
                                     }

@@ -19,6 +19,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.reachme.Adapters.ChatAdapter;
+import com.example.reachme.Encryption.AES;
 import com.example.reachme.Models.MessageModel;
 import com.example.reachme.Models.Users;
 import com.example.reachme.databinding.ActivityChatsDetailedBinding;
@@ -185,6 +186,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                         for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                             MessageModel model = snapshot1.getValue(MessageModel.class);
                             model.setMessageId(snapshot1.getKey());
+                            model.setMessage(AES.decrypt(model.getMessage())); // decrypt message
                             messageModels.add(model);
                         }
                         chatAdapter.notifyDataSetChanged();
@@ -219,8 +221,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                     binding.message.setError("Enter text to send");
                     return;
                 }
-
-                String message = binding.message.getText().toString();
+                String message = AES.encrypt(binding.message.getText().toString()); // Encrypted Message
                 final MessageModel model = new MessageModel(senderId, message);
                 model.setTimeStamp(new Date().getTime());
                 binding.message.setText("");
@@ -235,7 +236,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                                         .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
-                                                sendNotification(message,reciverId);
+                                                sendNotification(AES.decrypt(message),reciverId);
                                             }
                                         });
                             }

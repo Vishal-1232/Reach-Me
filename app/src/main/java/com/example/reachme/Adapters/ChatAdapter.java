@@ -78,7 +78,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         String reciverRoom = recID + senderID;
 
         // deleting message
-        if (holder.getClass() == SenderViewHolder.class && !messageModel.getMessage().equals("This Message is Deleted")) {
+        if (holder.getClass() == SenderViewHolder.class && !messageModel.getMessage().isEmpty() && !messageModel.getMessage().equals("This Message is Deleted")) {
             holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {

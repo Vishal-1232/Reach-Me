@@ -1,5 +1,6 @@
 package com.example.reachme.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,58 +10,79 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.reachme.R;
+import com.example.reachme.databinding.FragmentCallsBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CallsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.jitsi.meet.sdk.JitsiMeet;
+import org.jitsi.meet.sdk.JitsiMeetActivity;
+import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class CallsFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public CallsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CallsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CallsFragment newInstance(String param1, String param2) {
-        CallsFragment fragment = new CallsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    FragmentCallsBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calls, container, false);
+        binding = FragmentCallsBinding.inflate(inflater, container, false);
+
+        URL serverURL;
+        try {
+            serverURL = new URL("https://meet.jit.si");
+            JitsiMeetConferenceOptions defaultOoptions = new JitsiMeetConferenceOptions.Builder()
+                    .setServerURL(serverURL)
+                    .setFeatureFlag("welcomepage.enabled", false)
+                    .build();
+            JitsiMeet.setDefaultConferenceOptions(defaultOoptions);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        binding.join.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String roomKey = binding.secretCode.getText().toString();
+                if (roomKey.isEmpty()) {
+                    binding.secretCode.setError("Required");
+                    return;
+                }
+
+                try {
+                    JitsiMeetConferenceOptions options = new JitsiMeetConferenceOptions.Builder()
+                            .setRoom(roomKey)
+                            .build();
+                    JitsiMeetActivity.launch(getContext(), options);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        binding.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String roomKey = binding.secretCode.getText().toString();
+                if (roomKey.isEmpty()) {
+                    binding.secretCode.setError("Required");
+                    return;
+                }
+                String str = binding.secretCode.getText().toString();
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT, str);
+                intent.setType("text/plain");
+                Intent shareIntent = Intent.createChooser(intent, null);
+                startActivity(shareIntent);
+            }
+        });
+
+        return binding.getRoot();
     }
 }
