@@ -38,6 +38,7 @@ public class CallsFragment extends Fragment {
             JitsiMeetConferenceOptions defaultOoptions = new JitsiMeetConferenceOptions.Builder()
                     .setServerURL(serverURL)
                     .setFeatureFlag("welcomepage.enabled", false)
+                    .setFeatureFlag("invite.enabled",false)
                     .build();
             JitsiMeet.setDefaultConferenceOptions(defaultOoptions);
         } catch (MalformedURLException e) {

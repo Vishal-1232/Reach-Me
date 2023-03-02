@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -108,8 +109,9 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                 database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
                         .child("connectionStatus").setValue("typing...");
                 handler.removeCallbacksAndMessages(null);
-                handler.postDelayed(userStoppedTyping,1000);
+                handler.postDelayed(userStoppedTyping, 1000);
             }
+
             Runnable userStoppedTyping = new Runnable() {
                 @Override
                 public void run() {
@@ -173,7 +175,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
 
         // Chatting logic
 
-         senderRoom = senderId + reciverId;
+        senderRoom = senderId + reciverId;
         final String reciverRoom = reciverId + senderId;
 
         // getting chats from database
@@ -183,15 +185,29 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         messageModels.clear();
-                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                            MessageModel model = snapshot1.getValue(MessageModel.class);
-                            model.setMessageId(snapshot1.getKey());
-                            model.setMessage(AES.decrypt(model.getMessage())); // decrypt message
-                            messageModels.add(model);
-                        }
-                        chatAdapter.notifyDataSetChanged();
-                        //binding.chatsRecyclerView.smoothScrollToPosition(binding.chatsRecyclerView.getAdapter().getItemCount());
-                        binding.chatsRecyclerView.scrollToPosition(binding.chatsRecyclerView.getAdapter().getItemCount() - 1);
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                    MessageModel model = snapshot1.getValue(MessageModel.class);
+                                    model.setMessageId(snapshot1.getKey());
+                                    //model.setMessage(model.getMessage());
+                                    model.setMessage(AES.decrypt(model.getMessage())); // decrypt message
+                                    messageModels.add(model);
+                                }
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        chatAdapter.notifyDataSetChanged();
+                                        //binding.chatsRecyclerView.smoothScrollToPosition(binding.chatsRecyclerView.getAdapter().getItemCount());
+                                        binding.chatsRecyclerView.scrollToPosition(binding.chatsRecyclerView.getAdapter().getItemCount() - 1);
+                                    }
+                                });
+
+                            }
+                        };
+                        Thread thread = new Thread(runnable);
+                        thread.start();
                     }
 
                     @Override
@@ -221,32 +237,40 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                     binding.message.setError("Enter text to send");
                     return;
                 }
-                String message = AES.encrypt(binding.message.getText().toString()); // Encrypted Message
-                final MessageModel model = new MessageModel(senderId, message);
-                model.setTimeStamp(new Date().getTime());
+                String MESSAGE = binding.message.getText().toString();
                 binding.message.setText("");
-
-                // storing message in database
-                String randomKey = database.getReference().push().getKey();
-                database.getReference().child("Chats").child(senderRoom).child(randomKey)
-                        .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                database.getReference().child("Chats").child(reciverRoom).child(randomKey)
-                                        .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                sendNotification(AES.decrypt(message),reciverId);
-                                            }
-                                        });
-                            }
-                        });
+                Runnable sendMsg = new Runnable() {
+                    @Override
+                    public void run() {
+                        String message = AES.encrypt(MESSAGE); // Encrypted Message
+                        //String message = binding.message.getText().toString();
+                        final MessageModel model = new MessageModel(senderId, message);
+                        model.setTimeStamp(new Date().getTime());
+                        // storing message in database
+                        String randomKey = database.getReference().push().getKey();
+                        database.getReference().child("Chats").child(senderRoom).child(randomKey)
+                                .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        database.getReference().child("Chats").child(reciverRoom).child(randomKey)
+                                                .setValue(model).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        sendNotification(MESSAGE, reciverId);
+                                                    }
+                                                });
+                                    }
+                                });
+                    }
+                };
+                Thread thread = new Thread(sendMsg);
+                thread.start();
             }
         });
 
     }
 
-    private void sendNotification(String message,String reciverId) {
+    private void sendNotification(String message, String reciverId) {
         final Users[] curr = new Users[2];
 
         database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -266,7 +290,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         curr[1] = snapshot.getValue(Users.class);
                         Toast.makeText(ChatsDetailedActivity.this, "Notification", Toast.LENGTH_SHORT).show();
-                        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(curr[1].getFcmTokken(), "New Message from "+curr[0].getUserName(),message,ChatsDetailedActivity.this,ChatsDetailedActivity.this);
+                        FcmNotificationsSender notificationsSender = new FcmNotificationsSender(curr[1].getFcmTokken(), "New Message from " + curr[0].getUserName(), message, ChatsDetailedActivity.this, ChatsDetailedActivity.this);
                         notificationsSender.SendNotifications();
                     }
 
@@ -307,7 +331,8 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                 Toast.makeText(this, "Feature will be available in next update", Toast.LENGTH_SHORT).show();
                 break;
             default:
-                Toast.makeText(this, "INVALID SELECTION!!", Toast.LENGTH_SHORT).show();;
+                Toast.makeText(this, "INVALID SELECTION!!", Toast.LENGTH_SHORT).show();
+                ;
         }
         return super.onOptionsItemSelected(item);
     }
