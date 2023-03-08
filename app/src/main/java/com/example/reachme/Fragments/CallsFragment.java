@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.reachme.MainActivity;
 import com.example.reachme.R;
 import com.example.reachme.databinding.FragmentCallsBinding;
 
@@ -31,6 +32,8 @@ public class CallsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCallsBinding.inflate(inflater, container, false);
+        MainActivity mainActivity = (MainActivity)getActivity();
+        mainActivity.getSupportActionBar().hide();
 
         URL serverURL;
         try {

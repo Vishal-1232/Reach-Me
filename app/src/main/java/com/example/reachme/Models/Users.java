@@ -6,9 +6,10 @@ import java.util.Locale;
 
 public class Users {
     String profilePic,coverImage,userName,password,userID,lastMessage,mail,about,connectionStatus,fcmTokken;
+    int followerCount;
     long lastSeen;
 
-    public Users(String profilePic, String coverImage, String userName, String password, String userID, String lastMessage, String mail, String about, String connectionStatus, String fcmTokken, long lastSeen) {
+    public Users(String profilePic, String coverImage, String userName, String password, String userID, String lastMessage, String mail, String about, String connectionStatus, String fcmTokken, int followerCount, long lastSeen) {
         this.profilePic = profilePic;
         this.coverImage = coverImage;
         this.userName = userName;
@@ -19,7 +20,13 @@ public class Users {
         this.about = about;
         this.connectionStatus = connectionStatus;
         this.fcmTokken = fcmTokken;
+        this.followerCount = followerCount;
         this.lastSeen = lastSeen;
+    }
+
+    public Users(String userName, String about){
+        this.userName = userName;
+        this.about = about;
     }
 
     public Users(){};
@@ -29,6 +36,7 @@ public Users(String userName,String password,String mail,String connectionStatus
     this.password = password;
     this.mail = mail;
     this.connectionStatus = connectionStatus;
+    this.followerCount = 0;
 
 }
     public Users(String userName,String password,String mail,String connectionStatus,String fcmTokken){
@@ -128,6 +136,14 @@ public Users(String userName,String password,String mail,String connectionStatus
 
     public void setCoverImage(String coverImage) {
         this.coverImage = coverImage;
+    }
+
+    public int getFollowerCount() {
+        return followerCount;
+    }
+
+    public void setFollowerCount(int followerCount) {
+        this.followerCount = followerCount;
     }
 
     public String getTimeDate(long timeStamp){

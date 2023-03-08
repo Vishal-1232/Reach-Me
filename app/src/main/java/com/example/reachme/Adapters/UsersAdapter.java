@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reachme.ChatsDetailedActivity;
-import com.example.reachme.Encryption.AES;
 import com.example.reachme.R;
 
 import com.example.reachme.Models.Users;
@@ -74,7 +73,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> 
                             }
                         });
 
-        if (user.getConnectionStatus().equals("Online"))
+        if (user.getConnectionStatus() != null &&user.getConnectionStatus().equals("Online"))
         {
             holder.online.setVisibility(View.VISIBLE);
         }

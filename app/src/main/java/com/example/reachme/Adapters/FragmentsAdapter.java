@@ -8,7 +8,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.reachme.Fragments.CallsFragment;
 import com.example.reachme.Fragments.ChatsFragment;
-import com.example.reachme.Fragments.StatusFragment;
+import com.example.reachme.Fragments.PostFragment;
+import com.example.reachme.Fragments.SearchUserFragment;
+import com.example.reachme.Fragments.NotificationFragment;
 
 public class FragmentsAdapter extends FragmentPagerAdapter {
     public FragmentsAdapter(@NonNull FragmentManager fm) {
@@ -24,15 +26,17 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0: return new ChatsFragment();
-            case 1: return new StatusFragment();
-            case 2: return new CallsFragment();
+            case 1: return new PostFragment();
+            case 2: return new SearchUserFragment();
+            case 3: return new CallsFragment();
+            case 4: return new NotificationFragment();
             default:return new ChatsFragment();
         }
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 5;
     }
 
     @Nullable
@@ -42,10 +46,16 @@ public class FragmentsAdapter extends FragmentPagerAdapter {
         if (position == 0){
             title = "CHATS";
         }else if (position == 1){
-            title = "STATUS";
+            title = "POSTS";
         }
         else if (position == 2){
+            title = "FOLLOW";
+        }
+        else if(position==3){
             title = "CALLS";
+        }
+        else if(position==4){
+            title = "ALERTS";
         }
         return title;
     }

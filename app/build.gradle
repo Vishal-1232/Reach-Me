@@ -38,6 +38,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.github.MrNouri:DynamicSizes:1.0'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
     implementation 'com.squareup.picasso:picasso:2.8'
 
     implementation platform('com.google.firebase:firebase-bom:30.3.1')
@@ -51,9 +53,7 @@ dependencies {
     implementation 'androidx.emoji:emoji:1.1.0'
     implementation 'com.vanniktech:emoji-twitter:0.6.0'
     implementation "com.github.pgreze:android-reactions:1.6"
-
-    implementation 'com.github.3llomi:CircularStatusView:V1.0.2'
-    implementation 'com.github.OMARIHAMZA:StoryView:1.0.2-alpha'
+    
     implementation 'com.google.firebase:firebase-messaging:23.1.1'
 
     testImplementation 'junit:junit:4.13.2'
@@ -66,4 +66,8 @@ dependencies {
     implementation 'com.android.volley:volley:1.2.1'
 
     implementation ('org.jitsi.react:jitsi-meet-sdk:7.0.1') { transitive = true }
+
+    implementation 'com.github.marlonlom:timeago:4.0.3'
+    implementation 'com.github.3llomi:CircularStatusView:V1.0.3'
+    implementation 'com.github.OMARIHAMZA:StoryView:1.0.2-alpha'
 }
