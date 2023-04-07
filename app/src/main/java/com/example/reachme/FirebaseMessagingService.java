@@ -54,8 +54,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "1");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            builder.setSmallIcon(R.drawable.icontrans);
-            builder.setSmallIcon(resourceImage);
+            builder.setSmallIcon(R.drawable.man);
+           // builder.setSmallIcon(resourceImage);
         } else {
 //            builder.setSmallIcon(R.drawable.icon_kritikar);
             builder.setSmallIcon(resourceImage);

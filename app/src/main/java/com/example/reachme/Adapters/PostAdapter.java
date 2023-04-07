@@ -55,8 +55,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
         } else {
             holder.binding.descrp.setText(postDescrp);
         }
+        if (model.getPostImg().isEmpty()){
+            holder.binding.post.setVisibility(View.GONE);
+        }else{
         Picasso.get().load(model.getPostImg()).placeholder(R.drawable.placeholder_photo)
-                .into(holder.binding.post);
+                .into(holder.binding.post);}
         FirebaseDatabase.getInstance().getReference().child("Users")
                 .child(model.getPostedBy()).addValueEventListener(new ValueEventListener() {
                     @Override

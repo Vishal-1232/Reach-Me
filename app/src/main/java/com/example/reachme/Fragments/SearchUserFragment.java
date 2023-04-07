@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.reachme.Adapters.SearchUserAdapter;
+import com.example.reachme.FriendList;
 import com.example.reachme.MainActivity;
 import com.example.reachme.Models.Users;
 import com.example.reachme.R;
@@ -86,7 +87,33 @@ public class SearchUserFragment extends Fragment {
                         for (DataSnapshot snapshot1 : snapshot.getChildren()){
                             counter++;
                         }
-                        binding.requests.setText("Pending Requests : "+counter);
+                        binding.requests.setText("Requests : "+counter);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+        // Friend list
+        binding.frndlst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), FriendList.class));
+            }
+        });
+        // Friends Counter
+        database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
+                .child("Friends")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        int counter = 0;
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()){
+                            counter++;
+                        }
+                        binding.frndlst.setText("My friends : "+counter);
                     }
 
                     @Override

@@ -332,7 +332,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                 break;
             default:
                 Toast.makeText(this, "INVALID SELECTION!!", Toast.LENGTH_SHORT).show();
-                ;
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

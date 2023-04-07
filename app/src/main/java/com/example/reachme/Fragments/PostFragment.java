@@ -95,6 +95,10 @@ public class PostFragment extends Fragment {
         galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
             public void onActivityResult(Uri result) {
+                if (result == null){
+                    Toast.makeText(mainActivity, "Image not selected !", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Dialog dialog = new Dialog(getContext());
                 dialog.setContentView(R.layout.dialog_loading);
                 if(dialog.getWindow()!=null){
@@ -193,7 +197,9 @@ public class PostFragment extends Fragment {
         binding.postRv.setNestedScrollingEnabled(false);
 
 
-        database.getReference().child("Posts").addValueEventListener(new ValueEventListener() {
+        database.getReference().child("Posts")
+                .orderByChild("timestamp")
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 postList.clear();
@@ -212,9 +218,6 @@ public class PostFragment extends Fragment {
 
             }
         });
-
-
-
 
         return binding.getRoot();
     }

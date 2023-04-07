@@ -40,7 +40,7 @@ public class AddPostActivity extends AppCompatActivity {
     ActivityResultLauncher<String> galleryLauncher;
     FirebaseDatabase database;
     FirebaseStorage storage;
-    Uri img;
+    Uri img = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,26 +51,22 @@ public class AddPostActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
 
-        database.getReference().child("Users")
-                .child(FirebaseAuth.getInstance().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            Users user = snapshot.getValue(Users.class);
-                            Picasso.get().load(user.getProfilePic())
-                                    .placeholder(R.drawable.avatar)
-                                    .into(binding.profileimg);
-                            binding.profession.setText(user.getAbout());
-                            binding.Name.setText(user.getUserName());
-                        }
-                    }
+        database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Users user = snapshot.getValue(Users.class);
+                    Picasso.get().load(user.getProfilePic()).placeholder(R.drawable.avatar).into(binding.profileimg);
+                    binding.profession.setText(user.getAbout());
+                    binding.Name.setText(user.getUserName());
+                }
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
+            }
+        });
 
         binding.postDescrp.addTextChangedListener(new TextWatcher() {
             @Override
@@ -98,28 +94,26 @@ public class AddPostActivity extends AppCompatActivity {
             }
         });
 
-        galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
-                new ActivityResultCallback<Uri>() {
-                    @Override
-                    public void onActivityResult(Uri uri) {
-                        Uri empty = null;
-                        try {
-                            if (!uri.equals(empty)) {
-                                img = uri;
-                                binding.postImg.setImageURI(uri);
-                                binding.postImg.setVisibility(View.VISIBLE);
-                                binding.uploadPost.setBackgroundDrawable(ContextCompat.getDrawable(AddPostActivity.this, R.drawable.post_active_btn));
-                                binding.uploadPost.setTextColor(getResources().getColor(R.color.white));
-                                binding.uploadPost.setEnabled(true);
-                            } else {
-                                Toast.makeText(AddPostActivity.this, "Image not selected", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception e) {
-                            Toast.makeText(AddPostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-
+        galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri uri) {
+                try {
+                    if (uri != null) {
+                        img = uri;
+                        binding.postImg.setImageURI(uri);
+                        binding.postImg.setVisibility(View.VISIBLE);
+                        binding.uploadPost.setBackgroundDrawable(ContextCompat.getDrawable(AddPostActivity.this, R.drawable.post_active_btn));
+                        binding.uploadPost.setTextColor(getResources().getColor(R.color.white));
+                        binding.uploadPost.setEnabled(true);
+                    } else {
+                        Toast.makeText(AddPostActivity.this, "Image not selected", Toast.LENGTH_SHORT).show();
                     }
-                });
+                } catch (Exception e) {
+                    Toast.makeText(AddPostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
         binding.gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,38 +126,53 @@ public class AddPostActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Dialog dialog = new Dialog(AddPostActivity.this);
                 dialog.setContentView(R.layout.dialog_loading);
-                if(dialog.getWindow()!=null){
+                if (dialog.getWindow() != null) {
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
                 }
                 dialog.show();
-                final StorageReference storageReference = storage.getReference()
-                        .child("Posts").child(FirebaseAuth.getInstance().getUid())
-                        .child(new Date().getTime() + "");
-                storageReference.putFile(img).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                PostModel post = new PostModel();
-                                post.setPostImg(uri.toString());
-                                post.setPostDescription(binding.postDescrp.getText().toString());
-                                post.setPostedBy(FirebaseAuth.getInstance().getUid());
-                                post.setPostedAt(new Date().getTime());
+                final StorageReference storageReference = storage.getReference().child("Posts").child(FirebaseAuth.getInstance().getUid()).child(new Date().getTime() + "");
+                if (img == null) {
+                    PostModel post = new PostModel();
+                    post.setPostImg("");
+                    post.setPostDescription(binding.postDescrp.getText().toString());
+                    post.setPostedBy(FirebaseAuth.getInstance().getUid());
+                    post.setPostedAt(new Date().getTime());
 
-                                database.getReference().child("Posts")
-                                        .push().setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                dialog.dismiss();
-                                                Toast.makeText(AddPostActivity.this, "Posted Successfully", Toast.LENGTH_SHORT).show();
-                                                finish();
-                                            }
-                                        });
-                            }
-                        });
-                    }
-                });
+                    database.getReference().child("Posts").push().setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            dialog.dismiss();
+                            Toast.makeText(AddPostActivity.this, "Posted Successfully", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+                } else {
+                    storageReference.putFile(img).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    PostModel post = new PostModel();
+                                    post.setPostImg(uri.toString());
+                                    post.setPostDescription(binding.postDescrp.getText().toString());
+                                    post.setPostedBy(FirebaseAuth.getInstance().getUid());
+                                    post.setPostedAt(new Date().getTime());
+
+                                    database.getReference().child("Posts").push().setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            dialog.dismiss();
+                                            Toast.makeText(AddPostActivity.this, "Posted Successfully", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+
             }
         });
     }
