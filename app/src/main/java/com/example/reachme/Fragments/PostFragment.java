@@ -192,13 +192,15 @@ public class PostFragment extends Fragment {
     // posts...................................
         postList = new ArrayList<>();
         PostAdapter postAdapter = new PostAdapter(postList,getContext());
-        binding.postRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        binding.postRv.setLayoutManager(linearLayoutManager);
         binding.postRv.setAdapter(postAdapter);
         binding.postRv.setNestedScrollingEnabled(false);
 
 
         database.getReference().child("Posts")
-                .orderByChild("timestamp")
                 .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

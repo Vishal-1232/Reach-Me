@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.reachme.Adapters.FriendListAdapter;
 import com.example.reachme.Models.FollowerModel;
@@ -45,6 +46,10 @@ public class FriendList extends AppCompatActivity {
                             list.add(users);
                         }
                         friendListAdapter.notifyDataSetChanged();
+                        if (list.isEmpty()){
+                            Toast.makeText(FriendList.this, "You have 0 friends", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
                     }
 
                     @Override

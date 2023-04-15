@@ -43,7 +43,10 @@ public class NotificationFragment extends Fragment {
         list = new ArrayList<>();
         NotificationAdapter notificationAdapter = new NotificationAdapter(getContext(),list);
         binding.notificationsRv.setAdapter(notificationAdapter);
-        binding.notificationsRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        binding.notificationsRv.setLayoutManager(linearLayoutManager);
 
         FirebaseDatabase.getInstance().getReference().child("Notifications").child(FirebaseAuth.getInstance().getUid())
                 .addValueEventListener(new ValueEventListener() {

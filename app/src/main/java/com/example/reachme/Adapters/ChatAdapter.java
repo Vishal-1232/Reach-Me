@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reachme.ChatsDetailedActivity;
+import com.example.reachme.Encryption.AES;
 import com.example.reachme.Models.MessageModel;
 import com.example.reachme.Models.Users;
 import com.example.reachme.R;
@@ -114,7 +115,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             database.getReference().child("Chats").child(senderRoom)
                                     .child(messageModel.getMessageId()).child("message")
-                                    .setValue("This Message is Deleted");
+                                    .setValue(AES.encrypt("This Message is Deleted"));
                             database.getReference().child("Chats").child(reciverRoom)
                                     .child(messageModel.getMessageId()).child("message")
                                     .setValue("This Message is Deleted");
@@ -179,6 +180,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             }
 
             // storing felling in database
+            messageModel.setMessage(AES.encrypt(messageModel.getMessage()));
             messageModel.setFeeling(pos);
             FirebaseDatabase.getInstance().getReference().child("Chats")
                     .child(senderRoom)

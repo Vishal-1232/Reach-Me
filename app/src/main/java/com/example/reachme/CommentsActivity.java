@@ -54,10 +54,13 @@ public class CommentsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 PostModel postModel = snapshot.getValue(PostModel.class);
-                Postmodel=postModel;
-                Picasso.get().load(postModel.getPostImg())
-                        .placeholder(R.drawable.image).into(binding.postImg);
-
+                Postmodel = postModel;
+                if (!postModel.getPostImg().isEmpty()) {
+                    Picasso.get().load(postModel.getPostImg())
+                            .placeholder(R.drawable.image).into(binding.postImg);
+                }else{
+                    binding.postImg.setVisibility(View.GONE);
+                }
                 binding.desc.setText(postModel.getPostDescription());
                 binding.like.setText(postModel.getLikesCounter() + "");
                 binding.comment.setText(postModel.getCommentsCounter() + "");
@@ -150,7 +153,10 @@ public class CommentsActivity extends AppCompatActivity {
         CommentsAdapter commentsAdapter = new CommentsAdapter(CommentsActivity.this, list);
         binding.commentsRv.setNestedScrollingEnabled(false);
         binding.commentsRv.setAdapter(commentsAdapter);
-        binding.commentsRv.setLayoutManager(new LinearLayoutManager(CommentsActivity.this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        binding.commentsRv.setLayoutManager(linearLayoutManager);
 
         database.getReference().child("Posts").child(postId)
                 .child("Comments")
@@ -163,7 +169,7 @@ public class CommentsActivity extends AppCompatActivity {
                             list.add(commentsModel);
                         }
                         commentsAdapter.notifyDataSetChanged();
-                        binding.commentsRv.scrollToPosition(binding.commentsRv.getAdapter().getItemCount()-1);
+                        binding.commentsRv.scrollToPosition(binding.commentsRv.getAdapter().getItemCount() - 1);
                     }
 
                     @Override

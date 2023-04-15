@@ -80,6 +80,7 @@ public class ChatsFragment extends Fragment {
                     }
                 });
 
+
         database.getReference().child("Users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -136,7 +137,45 @@ public class ChatsFragment extends Fragment {
 
     @Override
     public void onResume() {
-        adapter.notifyDataSetChanged();
+        HashSet<String> friendList = new HashSet<>();
+        database.getReference().child("Users").child(FirebaseAuth.getInstance().getUid())
+                .child("Friends").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            FollowerModel follower = dataSnapshot.getValue(FollowerModel.class);
+                            follower.setId(dataSnapshot.getKey());
+                            friendList.add(follower.getId());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+        database.getReference().child("Users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Users users = dataSnapshot.getValue(Users.class);
+                    users.setUserID(dataSnapshot.getKey());
+
+                    if (friendList.contains(users.getUserID())) {
+                        list.add(users);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         mainActivity.getSupportActionBar().show();
         super.onResume();
     }

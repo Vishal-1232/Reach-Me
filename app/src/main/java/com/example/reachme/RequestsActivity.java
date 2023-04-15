@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.reachme.Adapters.FriendRequestsAdapter;
 import com.example.reachme.Models.FollowerModel;
@@ -44,6 +45,10 @@ public class RequestsActivity extends AppCompatActivity {
                             list.add(follower);
                         }
                         friendRequestsAdapter.notifyDataSetChanged();
+                        if (list.isEmpty()){
+                            Toast.makeText(RequestsActivity.this, "No request Pending", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
                     }
 
                     @Override

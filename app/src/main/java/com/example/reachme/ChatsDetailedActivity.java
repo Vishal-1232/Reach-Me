@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.reachme.Adapters.ChatAdapter;
 import com.example.reachme.Encryption.AES;
+import com.example.reachme.Models.FollowerModel;
 import com.example.reachme.Models.MessageModel;
 import com.example.reachme.Models.Users;
 import com.example.reachme.databinding.ActivityChatsDetailedBinding;
@@ -45,6 +46,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Locale;
 
 public class ChatsDetailedActivity extends AppCompatActivity {
@@ -55,6 +57,8 @@ public class ChatsDetailedActivity extends AppCompatActivity {
     FirebaseAuth auth;
 
     String senderRoom;
+    String reciverRoom;
+    String userBlockId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         final String senderId = auth.getUid();
 
         String reciverId = getIntent().getStringExtra("userID");
+        userBlockId = reciverId;
         String userName = getIntent().getStringExtra("userName");
         String profilePic = getIntent().getStringExtra("profilePic");
 
@@ -176,7 +181,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         // Chatting logic
 
         senderRoom = senderId + reciverId;
-        final String reciverRoom = reciverId + senderId;
+        reciverRoom = reciverId + senderId;
 
         // getting chats from database
 
@@ -228,11 +233,35 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         });
 
         // storing chats in database or sending messages
+        HashSet<String> friendList = new HashSet<>();
+        FirebaseDatabase.getInstance().getReference().child("Users")
+                .child(FirebaseAuth.getInstance().getUid()).child("Friends")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        friendList.clear();
+                        if (snapshot.exists()) {
+                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                FollowerModel followerModel = dataSnapshot.getValue(FollowerModel.class);
+                                followerModel.setId(dataSnapshot.getKey());
+                                friendList.add(followerModel.getId());
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
         binding.send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (!friendList.contains(reciverId)){
+                    //finish();
+                    Toast.makeText(ChatsDetailedActivity.this, "You are blocked by the user", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (binding.message.getText().toString().isEmpty()) {
                     binding.message.setError("Enter text to send");
                     return;
@@ -325,7 +354,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                 Toast.makeText(this, "Chats cleared", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.block:
-                Toast.makeText(this, "Feature will be available in next update", Toast.LENGTH_SHORT).show();
+                blockUser();
                 break;
             case R.id.report:
                 Toast.makeText(this, "Feature will be available in next update", Toast.LENGTH_SHORT).show();
@@ -337,7 +366,49 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void blockUser() {
+        // using follower model as block user model
+        FollowerModel followerModel = new FollowerModel(userBlockId, new Date().getTime());
+        FirebaseDatabase.getInstance().getReference().child("Users")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("BlockList")
+                .child(userBlockId).setValue(followerModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        FirebaseDatabase.getInstance().getReference().child("Users")
+                                .child(FirebaseAuth.getInstance().getUid())
+                                .child("Friends")
+                                .child(userBlockId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Toast.makeText(ChatsDetailedActivity.this, "User Blocked", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                        FirebaseDatabase.getInstance().getReference().child("Users")
+                                                .child(userBlockId)
+                                                .child("Friends")
+                                                .child(FirebaseAuth.getInstance().getUid())
+                                                .removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        // Desteroying rooms
+                                                        //sender room desteroyed
+                                                        database.getReference().child("Chats").child(senderRoom).removeValue();
+                                                        // Desteroying Reciver Room
+                                                        database.getReference().child("Chats").child(reciverRoom).removeValue();
+                                                    }
+                                                });
+                                        FirebaseDatabase.getInstance().getReference().child("Users")
+                                                .child(userBlockId).child("BlockedBy")
+                                                .child(FirebaseAuth.getInstance().getUid())
+                                                .setValue(new FollowerModel(FirebaseAuth.getInstance().getUid(), new Date().getTime()));
+                                    }
+                                });
+                    }
+                });
+    }
+
     private void clearChats() {
         database.getReference().child("Chats").child(senderRoom).setValue(null);
     }
+
 }
