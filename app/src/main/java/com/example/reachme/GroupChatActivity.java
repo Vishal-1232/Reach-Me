@@ -34,10 +34,6 @@ public class GroupChatActivity extends AppCompatActivity {
         binding.back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //GroupChatActivity.super.onBackPressed();
-                Intent intent = new Intent(GroupChatActivity.this,MainActivity.class);
-                //finish();
-                startActivity(intent);
                 finish();
             }
         });
@@ -101,10 +97,4 @@ public class GroupChatActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(GroupChatActivity.this,MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
 }

@@ -59,8 +59,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                                 holder.binding.detail.setText(Html.fromHtml("<b>" + user.getUserName() + "</b>" + " Liked your Post."));
                             } else if (type.equals("Comment")) {
                                 holder.binding.detail.setText(Html.fromHtml("<b>" + user.getUserName() + "</b>" + " Commented on your Post."));
-                            } else if (type.equals("Follow")) {
+                            } else if (type.equals("Requested")) {
                                 holder.binding.detail.setText(Html.fromHtml("<b>" + user.getUserName() + "</b>" + " Sent you a Friend Request"));
+                            }else if(type.equals("Accepted")){
+                                holder.binding.detail.setText(Html.fromHtml("<b>" + user.getUserName() + "</b>" + " Accepted your Friend Request"));
                             }
 
                         }

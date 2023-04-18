@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_marginTop="@dimen/_25mdp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_25mdp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
@@ -25,7 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="dfasldfl lkm fdsd"
-        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="@+id/uname"
         app:layout_constraintTop_toBottomOf="@+id/uname" />
 
@@ -35,7 +33,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Vishal"
-        android:textColor="@color/white"
         android:textSize="@dimen/_14mdp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/profile_image"
@@ -52,7 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/profile_image"
         app:srcCompat="@drawable/dots"
-        app:tint="#FBF9F9" />
+        app:tint="@color/arrow" />
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/post"
@@ -79,7 +76,9 @@
         android:layout_marginTop="16dp"
         android:drawablePadding="10dp"
         android:text="200"
+
         app:drawableLeftCompat="@drawable/ic_baseline_favorite_border_24"
+        app:drawableTint="@color/arrow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/descrp" />
 
@@ -91,7 +90,7 @@
         android:drawablePadding="10dp"
         android:text="200"
         app:drawableStartCompat="@drawable/ic_baseline_comment_24"
-        app:drawableTint="#EEEDED"
+        app:drawableTint="@color/arrow"
         app:layout_constraintStart_toEndOf="@+id/like"
         app:layout_constraintTop_toTopOf="@+id/like" />
 
@@ -103,7 +102,7 @@
         android:drawablePadding="10dp"
         android:text="200"
         app:drawableLeftCompat="@drawable/ic_baseline_share_24"
-        app:drawableTint="#EEEDED"
+        app:drawableTint="@color/arrow"
         app:layout_constraintStart_toEndOf="@+id/comment"
         app:layout_constraintTop_toTopOf="@+id/comment" />
 
@@ -121,13 +120,12 @@
     <TextView
         android:id="@+id/descrp"
         android:layout_width="0dp"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_16font_mdp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="TextView"
+        android:textSize="@dimen/_16font_mdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post" />

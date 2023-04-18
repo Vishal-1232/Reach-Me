@@ -198,10 +198,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.logout:
                 SignOut();
                 break;
+            case R.id.chatBot:
+                startActivity(new Intent(MainActivity.this,ChatBotActivity.class));
+                break;
             case R.id.groupChat:
                 Intent intent = new Intent(MainActivity.this, GroupChatActivity.class);
                 startActivity(intent);
-                finish();
                 break;
             case R.id.settings:
                 Intent intent1 = new Intent(MainActivity.this, SettingsActivity.class);

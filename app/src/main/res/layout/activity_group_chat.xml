@@ -51,7 +51,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/dots"
-                app:tint="#F5ECEC" />
+                app:tint="@color/arrow" />
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -80,7 +80,6 @@
                 android:layout_marginStart="8dp"
                 android:inputType="textMultiLine"
                 android:text="User Namesdsdsd656sd"
-                android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -113,12 +112,13 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="3dp"
             android:layout_weight="5"
+            android:textColor="@color/white"
+            android:textColorHint="#68FFFFFF"
             android:background="@drawable/bg_et_message"
             android:ems="10"
             android:hint="Enter your Message"
             android:inputType="textPersonName"
             android:padding="10dp"
-            android:textColor="#FFFFFC"
             android:textSize="16sp" />
 
         <ImageView

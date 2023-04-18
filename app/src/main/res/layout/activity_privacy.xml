@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#130101"
     tools:context=".PrivacyActivity">
 
     <Switch
@@ -27,7 +26,6 @@
         android:drawableLeft="@drawable/ic_baseline_security_24"
         android:drawablePadding="15dp"
         android:text="Biometric Authentication"
-        android:textColor="#F9F7F7"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/biometric"
         app:layout_constraintEnd_toStartOf="@+id/biometric"
@@ -40,19 +38,17 @@
         android:layout_height="20dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="#070707"
         android:hapticFeedbackEnabled="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow"
-        app:tint="#F6F4F4" />
+        app:tint="@color/arrow" />
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="Privacy"
-        android:textColor="#F6F0F0"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/baCk"
@@ -61,14 +57,14 @@
 
     <TextView
         android:id="@+id/blocklist"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:drawableLeft="@drawable/ic_baseline_block_24"
         android:drawablePadding="15dp"
         android:text="Block List"
-        android:textColor="#F6F6F6"
         android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/biometric"
         app:layout_constraintStart_toStartOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 </androidx.constraintlayout.widget.ConstraintLayout>

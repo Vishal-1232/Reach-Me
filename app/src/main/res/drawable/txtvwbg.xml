@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <stroke
-        android:color="@color/white"
+        android:color="@color/arrow"
         android:width="@dimen/_2mdp"/>
     <padding
         android:bottom="@dimen/_10mdp"

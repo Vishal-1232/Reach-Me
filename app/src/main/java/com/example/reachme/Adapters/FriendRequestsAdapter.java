@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reachme.FcmNotificationsSender;
 import com.example.reachme.Models.FollowerModel;
+import com.example.reachme.Models.NotificationModel;
 import com.example.reachme.Models.Users;
 import com.example.reachme.R;
 import com.example.reachme.databinding.SampleShowFriendRequestsBinding;
@@ -83,6 +84,13 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
                                                         Users users = snapshot.getValue(Users.class);
                                                         FcmNotificationsSender notificationsSender = new FcmNotificationsSender(followerFcm,"Request Accepted",users.getUserName()+" accepted your friend request",context, (Activity) context);
                                                         notificationsSender.SendNotifications();
+
+                                                        // Alert
+                                                        NotificationModel notification = new NotificationModel();
+                                                        notification.setNotificationBy(FirebaseAuth.getInstance().getUid());
+                                                        notification.setNotificationType("Accepted");
+                                                        notification.setTime(new Date().getTime());
+                                                        FirebaseDatabase.getInstance().getReference().child("Notifications").child(model.getId()).push().setValue(notification);
                                                     }
 
                                                     @Override

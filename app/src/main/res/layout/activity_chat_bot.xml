@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FF80AB"
-    tools:context=".ChatsDetailedActivity">
+    tools:context=".ChatBotActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -37,8 +37,7 @@
                 android:layout_height="60dp"
                 android:layout_marginStart="5dp"
                 android:padding="5dp"
-                android:src="@drawable/man"
-                app:civ_border_color="#B32F2F"
+                android:src="@drawable/robot"
                 app:civ_border_width="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/back"
@@ -72,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:inputType="textMultiLine"
-                android:text="123456"
+                android:text="Chat Bot"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -87,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginBottom="8dp"
-                android:text="Last seen: Mon tue"
+                android:text="Online"
                 android:textColor="#F8F4F4"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -119,13 +118,12 @@
 
         <ImageView
             android:id="@+id/emoji"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_baseline_emoji_emotions_24"
-            android:padding="8dp"
-            android:layout_marginLeft="5dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
-            />
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/ic_baseline_mic_24"
+            android:padding="8dp" />
 
         <EditText
             android:id="@+id/message"

@@ -35,7 +35,6 @@
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp"
                 android:text="Vishal"
-                android:textColor="#F3F0F0"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -61,8 +60,7 @@
                 android:maxLength="25"
                 android:maxLines="2"
                 android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:textColor="#E3DEDE" />
+                android:paddingBottom="2dp" />
 
             <TextView
                 android:id="@+id/timestmp"

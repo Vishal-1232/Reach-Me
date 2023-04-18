@@ -50,7 +50,7 @@
                 android:layout_below="@+id/profile_image"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@color/white" />
+                android:background="@color/arrow" />
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView2"
@@ -139,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/_2mdp"
                 android:layout_marginTop="12dp"
-                android:background="@color/white" />
+                android:background="@color/arrow" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/post_rv"

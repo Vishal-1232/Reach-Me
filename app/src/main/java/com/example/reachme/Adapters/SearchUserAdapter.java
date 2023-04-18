@@ -71,7 +71,7 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.vi
                             if (snapshot.exists()) {
                                 holder.follow.setBackgroundResource(R.drawable.following_btn);
                                 holder.follow.setText("Request Sent");
-                                holder.follow.setTextColor(context.getResources().getColor(R.color.white));
+                                holder.follow.setTextColor(context.getResources().getColor(R.color.arrow));
                                 holder.follow.setEnabled(false);
                             } else {
                                 FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getUid()).child("BlockList")
@@ -109,14 +109,14 @@ public class SearchUserAdapter extends RecyclerView.Adapter<SearchUserAdapter.vi
                                                                                                 Toast.makeText(context, "Started following : " + model.getUserName(), Toast.LENGTH_SHORT).show();
                                                                                                 holder.follow.setBackgroundResource(R.drawable.following_btn);
                                                                                                 holder.follow.setText("Request Sent");
-                                                                                                holder.follow.setTextColor(context.getResources().getColor(R.color.white));
+                                                                                                holder.follow.setTextColor(context.getResources().getColor(R.color.arrow));
                                                                                                 holder.follow.setEnabled(false);
                                                                                                 Toast.makeText(context, "User Follower" + model.getFollowerCount(), Toast.LENGTH_SHORT).show();
 
                                                                                                 // notifiation work
                                                                                                 NotificationModel notification = new NotificationModel();
                                                                                                 notification.setNotificationBy(FirebaseAuth.getInstance().getUid());
-                                                                                                notification.setNotificationType("Follow");
+                                                                                                notification.setNotificationType("Requested");
                                                                                                 notification.setTime(new Date().getTime());
                                                                                                 FirebaseDatabase.getInstance().getReference().child("Notifications").child(model.getUserID()).push().setValue(notification);
                                                                                                 sendNotification(FirebaseAuth.getInstance().getUid(), model.getFcmTokken());

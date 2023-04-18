@@ -21,7 +21,6 @@
         android:layout_marginRight="7dp"
         android:background="@drawable/bg_sender"
         android:maxWidth="310dp"
-        android:maxHeight="400dp"
         android:minHeight="30dp">
 
         <androidx.constraintlayout.widget.Guideline
