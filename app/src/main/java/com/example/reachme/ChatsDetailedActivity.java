@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.reachme.Adapters.ChatAdapter;
 import com.example.reachme.Encryption.AES;
+import com.example.reachme.Fragments.ChatAttachmentsFragment;
 import com.example.reachme.Models.FollowerModel;
 import com.example.reachme.Models.MessageModel;
 import com.example.reachme.Models.Users;
@@ -59,6 +60,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
     String senderRoom;
     String reciverRoom;
     String userBlockId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,8 +198,11 @@ public class ChatsDetailedActivity extends AppCompatActivity {
                                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                                     MessageModel model = snapshot1.getValue(MessageModel.class);
                                     model.setMessageId(snapshot1.getKey());
-                                    //model.setMessage(model.getMessage());
-                                    model.setMessage(AES.decrypt(model.getMessage())); // decrypt message
+                                    if (model.getType().equals("Photo")){
+                                        model.setMessage(model.getMessage());
+                                    }else{
+                                        model.setMessage(AES.decrypt(model.getMessage())); // decrypt message
+                                    }
                                     messageModels.add(model);
                                 }
                                 runOnUiThread(new Runnable() {
@@ -257,7 +262,7 @@ public class ChatsDetailedActivity extends AppCompatActivity {
         binding.send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!friendList.contains(reciverId)){
+                if (!friendList.contains(reciverId)) {
                     //finish();
                     Toast.makeText(ChatsDetailedActivity.this, "You are blocked by the user", Toast.LENGTH_SHORT).show();
                     return;
@@ -297,6 +302,18 @@ public class ChatsDetailedActivity extends AppCompatActivity {
             }
         });
 
+        // Attachment work
+        binding.attachment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ChatAttachmentsFragment chatAttachmentsFragment = new ChatAttachmentsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("SENDER_ROOM",senderRoom);
+                bundle.putString("RECIVER_ROOM",reciverRoom);
+                chatAttachmentsFragment.setArguments(bundle);
+                chatAttachmentsFragment.show(getSupportFragmentManager(), chatAttachmentsFragment.getTag());
+            }
+        });
     }
 
     private void sendNotification(String message, String reciverId) {

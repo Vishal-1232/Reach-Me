@@ -108,6 +108,7 @@
         android:layout_marginTop="-2dp"
         android:layout_marginBottom="4dp"
         android:background="#FF80AB" />
+
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="match_parent"
@@ -121,11 +122,10 @@
             android:id="@+id/emoji"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_baseline_emoji_emotions_24"
-            android:padding="8dp"
-            android:layout_marginLeft="5dp"
             android:layout_gravity="center"
-            />
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/ic_baseline_emoji_emotions_24"
+            android:padding="8dp" />
 
         <EditText
             android:id="@+id/message"
@@ -136,10 +136,10 @@
             android:background="@drawable/bg_et_message"
             android:ems="10"
             android:hint="Enter your Message"
-            android:textColorHint="#A7FFFFFF"
-            android:textColor="@color/white"
             android:inputType="textPersonName"
             android:padding="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="#A7FFFFFF"
             android:textSize="16sp" />
 
         <ImageView
@@ -151,6 +151,12 @@
             android:layout_weight="1"
             android:paddingLeft="10dp"
             app:srcCompat="@drawable/send" />
+
+        <ImageView
+            android:id="@+id/attachment"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_baseline_attachment_24" />
     </LinearLayout>
 
 </RelativeLayout>

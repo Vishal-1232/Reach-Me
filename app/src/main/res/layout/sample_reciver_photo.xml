@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/photo"
+        android:layout_width="@dimen/_200mdp"
+        android:layout_height="@dimen/_200mdp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/man"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_border_color="#333333"
+        app:riv_border_width="2dp"
+        app:riv_corner_radius="5dp"
+        app:riv_mutate_background="false"
+        app:riv_oval="false" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/msg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_reciver"
+        android:maxWidth="310dp"
+        android:minHeight="30dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/photo"
+        app:layout_constraintStart_toStartOf="@+id/photo"
+        app:layout_constraintTop_toBottomOf="@+id/photo">
+
+        <TextView
+            android:id="@+id/recivedText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:inputType="textLongMessage|textMultiLine"
+            android:maxWidth="270dp"
+            android:minWidth="50dp"
+            android:text="TextView"
+            android:textColor="#F9F9F9"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/reciveTime"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/reciveTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="3dp"
+            android:text="12:00am"
+            android:textColor="#E8E4E4"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="18dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/downloadImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Download"
+        app:layout_constraintBottom_toBottomOf="@+id/photo"
+        app:layout_constraintEnd_toEndOf="@+id/photo"
+        app:layout_constraintStart_toStartOf="@+id/photo"
+        app:layout_constraintTop_toTopOf="@+id/photo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

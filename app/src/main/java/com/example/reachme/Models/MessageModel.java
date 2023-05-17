@@ -8,6 +8,24 @@ public class MessageModel {
     String uid, message, messageId;
     long timeStamp;
     int feeling = -1;
+    boolean downloaded = false;
+    String type = "Text", photo="";
+
+    public boolean isDownloaded() {
+        return downloaded;
+    }
+
+    public void setDownloaded(boolean downloaded) {
+        this.downloaded = downloaded;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
     public MessageModel(String uid, String message, String messageId, long timeStamp, int feeling) {
         this.uid = uid;
@@ -63,6 +81,14 @@ public class MessageModel {
 
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getTimeDate(long timeStamp) {

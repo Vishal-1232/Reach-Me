@@ -43,7 +43,7 @@ import java.util.Objects;
 public class ChatBotActivity extends AppCompatActivity {
     ActivityChatBotBinding binding;
     private String apiURL = "https://api.openai.com/v1/completions";
-    String accessTokken = "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";
+    String accessTokken = "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";
 
     private static final int REQUEST_CODE_SPEECH_INPUT = 1;
     ArrayList<MessageModel> messageList;

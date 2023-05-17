@@ -2,6 +2,8 @@ package com.example.reachme.Adapters;
 
 import static android.view.View.INVISIBLE;
 
+import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.reachme.ChatsDetailedActivity;
+import com.example.reachme.Encryption.AES;
 import com.example.reachme.R;
 
 import com.example.reachme.Models.Users;
@@ -50,34 +53,43 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> 
         Users user = list.get(position);
         Picasso.get().load(user.getProfilePic()).placeholder(R.drawable.avatar).into(holder.profilePic);
         holder.userName.setText(user.getUserName());
-        //holder.lastMsg.setText();
-        FirebaseDatabase.getInstance().getReference().child("Chats").child(FirebaseAuth.getInstance().getUid()+user.getUserID())
-                        .orderByChild("timestamp").limitToLast(1)
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if (snapshot.hasChildren()){
-                                    for(DataSnapshot snapshot1 : snapshot.getChildren()){
-                                        //holder.lastMsg.setText(AES.decrypt(snapshot1.child("message").getValue(String.class).toString()));
-                                        holder.lastMsg.setText(snapshot1.child("message").getValue(String.class));
+        FirebaseDatabase.getInstance().getReference().child("Chats").child(FirebaseAuth.getInstance().getUid() + user.getUserID())
+                .orderByChild("timestamp").limitToLast(1)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.hasChildren()) {
+                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                Runnable runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String LastMsg = AES.decrypt(snapshot1.child("message").getValue(String.class).toString());
                                         Long timing = snapshot1.child("timeStamp").getValue(Long.class);
-                                        holder.time.setText(getTimeDate(timing));
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                holder.lastMsg.setText(LastMsg);
+                                                holder.time.setText(getTimeDate(timing));
+                                            }
+                                        });
                                     }
-
-                                }
+                                };
+                                Thread thread = new Thread(runnable);
+                                thread.start();
                             }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    }
 
-                            }
-                        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
-        if (user.getConnectionStatus() != null &&user.getConnectionStatus().equals("Online"))
-        {
+                    }
+                });
+
+        if (user.getConnectionStatus() != null && user.getConnectionStatus().equals("Online")) {
             holder.online.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             holder.online.setVisibility(INVISIBLE);
         }
 
@@ -85,9 +97,9 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ChatsDetailedActivity.class);
-                intent.putExtra("userID",user.getUserID());
-                intent.putExtra("userName",user.getUserName());
-                intent.putExtra("profilePic",user.getProfilePic());
+                intent.putExtra("userID", user.getUserID());
+                intent.putExtra("userName", user.getUserName());
+                intent.putExtra("profilePic", user.getProfilePic());
 
                 context.startActivity(intent);
             }
@@ -101,8 +113,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> 
     }
 
     public class viewHolder extends RecyclerView.ViewHolder {
-        ImageView profilePic,online;
-        TextView userName,lastMsg,time;
+        ImageView profilePic, online;
+        TextView userName, lastMsg, time;
 
         public viewHolder(@NonNull View itemView) {
             super(itemView);
@@ -114,13 +126,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.viewHolder> 
         }
     }
 
-    public String getTimeDate(long timeStamp)
-    {
-        try{
+    public String getTimeDate(long timeStamp) {
+        try {
             Date netDate = (new Date(timeStamp));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d  h:mm a", Locale.getDefault());
             return simpleDateFormat.format(netDate);
-        }catch (Exception e){
+        } catch (Exception e) {
             return "Time";
         }
     }

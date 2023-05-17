@@ -50,16 +50,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.viewHolder> {
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         PostModel model = list.get(position);
         String postDescrp = model.getPostDescription();
-        if (postDescrp.isEmpty()) {
-            holder.binding.descrp.setVisibility(View.GONE);
-        } else {
+        if (!postDescrp.isEmpty()) {
+            holder.binding.descrp.setVisibility(View.VISIBLE);
             holder.binding.descrp.setText(postDescrp);
-        }
-        if (model.getPostImg().isEmpty()){
-            holder.binding.post.setVisibility(View.GONE);
         }else{
-        Picasso.get().load(model.getPostImg()).placeholder(R.drawable.placeholder_photo)
-                .into(holder.binding.post);}
+            holder.binding.descrp.setVisibility(View.GONE);
+        }
+        if (!model.getPostImg().isEmpty()){
+            holder.binding.post.setVisibility(View.VISIBLE);
+            Picasso.get().load(model.getPostImg()).placeholder(R.drawable.placeholder_photo)
+                    .into(holder.binding.post);
+        }else{
+            holder.binding.post.setVisibility(View.GONE);
+        }
+
+        // Load posted user data
         FirebaseDatabase.getInstance().getReference().child("Users")
                 .child(model.getPostedBy()).addValueEventListener(new ValueEventListener() {
                     @Override

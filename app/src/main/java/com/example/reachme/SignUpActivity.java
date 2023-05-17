@@ -24,8 +24,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.Nullable;
+
+import java.util.HashSet;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -196,9 +201,27 @@ public class SignUpActivity extends AppCompatActivity {
                                             users.setUserName(User.getDisplayName());
                                             users.setProfilePic(User.getPhotoUrl().toString());
                                             users.setMail(User.getEmail());
+                                            users.setAbout("Student");
                                             // users.setPhone(User.getPhoneNumber());
+                                            HashSet<String>list = new HashSet<>();
+                                            database.getReference().child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    list.clear();
+                                                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                                                        list.add(dataSnapshot.getKey());
+                                                    }
+                                                    if(!list.contains(User.getUid())){
+                                                        database.getReference().child("Users").child(User.getUid()).setValue(users);
+                                                    }
+                                                }
 
-                                            database.getReference().child("Users").child(User.getUid()).setValue(users);
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
+
                                         } else {
                                             // When task is unsuccessful
                                             // Display Toast

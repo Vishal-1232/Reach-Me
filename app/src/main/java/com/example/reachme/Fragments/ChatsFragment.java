@@ -70,7 +70,7 @@ public class ChatsFragment extends Fragment {
                             FollowerModel follower = dataSnapshot.getValue(FollowerModel.class);
                             follower.setId(dataSnapshot.getKey());
                             friendList.add(follower.getId());
-                            Toast.makeText(mainActivity, "Follower added " + friendList.size() + " ", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(mainActivity, "Follower added " + friendList.size() + " ", Toast.LENGTH_SHORT).show();
                         }
                     }
 
